@@ -315,6 +315,13 @@ class HumGenWrapper:
 
         self.human_obj = self.Human.from_preset(_sJsonFile)
 
+        # Assign the _sJsonFile name to the generated human model
+        sFileNameWithExtension = os.path.basename(_sJsonFile)
+        sFileName, sFileExtension = os.path.splitext(sFileNameWithExtension)
+        print("Assigned the name {} to human model", format(str(sFileName)))
+
+        self.human_obj.name = "HG_" + sFileName
+
         return self.human_obj.objects.rig
 
     def CreateHuman(self, _sName, _mParams):
