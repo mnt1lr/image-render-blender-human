@@ -65,7 +65,8 @@ def _testHumanGeneration():
                     "sId": "Seth",
                     "sMode": "FILE",
                     "mParamConfig": {
-                        "sFilename": "C:\\Users\\mnt1lr\\Documents\\work\\Cathy_HumGenV4_Development\\image-render-setup\\repos\image-render-blender-human\\src\\anyhuman\\personas\\HG_Seth.json"
+                    #C:\h4\image-render-setup\repos\image-render-blender-human\src\anyhuman\personas\Anna.json
+                        "sFilename": "C:\\h4\\image-render-setup\\repos\\image-render-blender-human\\src\\anyhuman\\personas\\Anna.json"
                     },
                 }
             )
@@ -224,4 +225,4 @@ def _testHumanGeneration():
 
 
 # uncomment the following line when testing the script in Blender:
-# _testHumanGeneration()
+_testHumanGeneration()

@@ -318,7 +318,7 @@ class HumGenWrapper:
         # Assign the _sJsonFile name to the generated human model
         sFileNameWithExtension = os.path.basename(_sJsonFile)
         sFileName, sFileExtension = os.path.splitext(sFileNameWithExtension)
-        print("Assigned the name {} to human model", format(str(sFileName)))
+        print("Assigned the name {} to human model".format(str(sFileName)))
 
         self.human_obj.name = "HG_" + sFileName
 
