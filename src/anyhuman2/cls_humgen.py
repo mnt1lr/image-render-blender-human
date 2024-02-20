@@ -43,7 +43,10 @@ from pathlib import Path
 from anyblend import node
 from anyblend.util.node import GetByLabelOrId
 from anyblend.collection import RemoveCollection
-from ..tools import RandomUniformDiscrete
+#import tools.RandomUniformDiscrete
+from .tools import RandomUniformDiscrete
+#from ..tools import RandomUniformDiscrete
+
 import addon_utils
 
 
@@ -320,105 +323,6 @@ class HumGenWrapper:
 
         return self.human_obj.objects.rig
 
-    def ExportJSON(self, _filename: str):
-
-        body = self.human_obj.body
-        skin = self.human_obj.skin
-        eyes = self.human_obj.eyes
-        hair =  self.human_obj.hair.regular_hair
-        beard = self.human_obj.beard
-        makeup = self.human_obj.makeup
-        outfit = self.human_obj.clothing.outfit
-        footwear = self.human_obj.footwear
-        sGender = self.human_obj.gender
-
-        # Save all values to JSON
-
-        new_params = {
-            "gender": sGender,
-            "body": body,  # random.choice(generator_params.dict_bodies[sGender]),
-            "muscular": self.human_obj.muscular,  # RandomUniformDiscrete(0, 1, 11),
-            "overweight": self.human_obj.overweight,  # RandomUniformDiscrete(0, 1, 11),
-            # set skinny value to 0-0.2 as  persons too skinny look odd
-            "skinny": self.human_obj.skinny,  # RandomUniformDiscrete(0, 0.5, 11),
-            "height": self.human_obj.height,  # random.randint(150, 190),
-            "face": self.human_obj.face,  # "random",
-            "skin": {
-                "tone": skin.tone.value,  # RandomUniformDiscrete(0.1, 1.9, 51),
-                "redness": skin.redness.value,  # RandomUniformDiscrete(-0.2, 0.8, 51),
-                "saturation": skin.saturation.value,  # RandomUniformDiscrete(0.1, 0.9, 51),
-                "normal_strength": skin.normal_strength.value,  # random.randint(1, 2),
-                "roughness_multiplier": skin.roughness_multiplier,  # RandomUniformDiscrete(1.5, 2.0, 51),
-                "dark_areas": skin.dark_areas,  # RandomUniformDiscrete(0.0, 2.0, 101),
-                "light_areas": skin.light_areas,  # RandomUniformDiscrete(0.0, 2.0, 101),
-                "freckles": skin.freckles.value,  # RandomUniformDiscrete(0.0, 0.5, 101),
-                "splotches": skin.splotches.value,  # RandomUniformDiscrete(0.0, 0.5, 101),
-                "beauty_spots_amount_": skin.beauty_spots_amount_,  # random.randint(0, 100),  # TODO clarify what this is
-                "beauty_spots_amount": skin.beauty_spots_amount,  # RandomUniformDiscrete(0.0, 1.0, 101),
-                "beauty_spots_opacity": skin.beauty_spots_opacity,  # RandomUniformDiscrete(0.0, 0.5, 101),
-                "sagging": skin.sagging,  # RandomUniformDiscrete(0.3, 1.0, 15),
-                "wrinkles": skin.wrinkles  # RandomUniformDiscrete(5.0, 20.0, 51)
-            },
-            "eyes": {
-                "iris_color": eyes.iris_color,  # [random.random(), random.random(), random.random(), 1.00],
-                "eyebrows_style": eyes.eyebrows_style,  # "random",
-                "eyebrows_length": eyes.eyebrows_length,  # None,  # TODO implement
-                "eyelashes_lenght": eyes.eyelashes_lenght,  # None,  # TODO implement
-                "hair_lightness": eyes.hair_lightness,  # 0.3,
-                "hair_redness": eyes.hair_redness,  # 0.9,
-                "hair_roughness": eyes.hair_roughness  # 0.3,
-            },
-            "hair": {
-                "hair_style": hair.hair_style,  # random.choice(list(generator_params.dict_hair[gender].keys())),
-                "length": hair.length,  # hairstyle seems not to be evaluated
-                "lightness": hair.lightness,
-                "redness": hair.redness,
-                "roughness": hair.roughness,
-                "salt_and_pepper": hair.salt_and_pepper,
-                "roots": hair.roots,
-                "hue": hair.hue
-            },
-            "beard": {
-                "beard_style": beard.beard_style if sGender == "male" else None,
-                "shadow_mustache": beard.shadow_mustache if sGender == "male" else 0,
-                "shadow_beard": beard.shadow_beard if sGender == "male" else 0,
-            },
-            "makeup": {
-                "foundation_amount": makeup.foundation_amount,  # 0,
-                "foundation_color": makeup.foundation_color,  # [0.655761, 0.332872, 0.191478, 1.000000],
-                "blush_opacity": makeup.blush_opacity,  # RandomUniformDiscrete(0.0, 1.0, 101),
-                "blush_color": makeup.blush_color,  # 0.553053, 0.138596, 0.109141, 1.000000],
-                "eyeshadow_opacity": makeup.eyeshadow_opacity,  # RandomUniformDiscrete(0.0, 1.0, 101),
-                "eyeshadow_color": makeup.eyeshadow_color,  # [0.239424, 0.041744, 0.013199, 1.000000],
-                "lipstick_opacity": makeup.lipstick_opacity,  # RandomUniformDiscrete(0.0, 1.0, 101),
-                "lipstick_color": makeup.lipstick_color,  # [0.309741, 0.091615, 0.073231, 1.000000],
-                "eyeliner_opacity": makeup.eyeliner_opacity,  # RandomUniformDiscrete(0.0, 1.0, 101),
-                "eyeliner_color": makeup.eyeliner_color,  # [0.001578, 0.010979, 0.060677, 1.000000],
-            },
-            "outfit": {
-                "outfit_style": outfit.outfit_style,
-                "outfit_pattern": outfit.outfit_pattern,
-                "outfit_palette": outfit.outfit_palette,  # "RANDOM_FULL",
-                "outfit_color": outfit.outfit_color,  # "random",
-                "outfit_brightness": outfit.outfit_brightness,  # random.triangular(0.6, 1.4),
-                "outfit_saturation": outfit.outfit_saturation,  # random.triangular(0.8, 1.7),
-                "outfit_contrast": outfit.outfit_contrast,  # random.triangular(1.8, 2.4),
-            },
-            "footwear": {
-                "footwear_style": footwear.footwear_style,  # "random",
-                "footwear_color": footwear.footwear_color,  # "random",
-            },
-            "posefilename": self.human_obj.posefilename,
-        }
-
-        if sGender == "male":
-            if random.choice([True, False]):
-                new_params["beard"]["beard_style"] = None
-
-        with open(_filename, 'w') as fp:
-            json.dump(new_params, fp)
-
-    # enddef
 
     def CreateFullRandomHuman(self, sGender: str):
         """
@@ -600,13 +504,113 @@ class HumGenWrapper:
         # Enable FACS
         self.human_obj.expression.load_facial_rig()
 
+        # Save all values to JSON
+
+        json_file = "./personas/"+self.human_obj.name+".json"
+        print(Path(json_file))
+        ExportJSON(self, Path(json_file))
+
     # enddef
 
+    def ExportJSON(self, _filename: str):
 
+        body = self.human_obj.body
+        skin = self.human_obj.skin
+        eyes = self.human_obj.eyes
+        hair =  self.human_obj.hair.regular_hair
+        beard = self.human_obj.beard
+        makeup = self.human_obj.makeup
+        outfit = self.human_obj.clothing.outfit
+        footwear = self.human_obj.footwear
+        sGender = self.human_obj.gender
 
+        # Save all values to JSON
 
+        new_params = {
+            "gender": sGender,
+            "body": body,  # random.choice(generator_params.dict_bodies[sGender]),
+            "muscular": self.human_obj.muscular,  # RandomUniformDiscrete(0, 1, 11),
+            "overweight": self.human_obj.overweight,  # RandomUniformDiscrete(0, 1, 11),
+            # set skinny value to 0-0.2 as  persons too skinny look odd
+            "skinny": self.human_obj.skinny,  # RandomUniformDiscrete(0, 0.5, 11),
+            "height": self.human_obj.height,  # random.randint(150, 190),
+            "face": self.human_obj.face,  # "random",
+            "skin": {
+                "tone": skin.tone.value,  # RandomUniformDiscrete(0.1, 1.9, 51),
+                "redness": skin.redness.value,  # RandomUniformDiscrete(-0.2, 0.8, 51),
+                "saturation": skin.saturation.value,  # RandomUniformDiscrete(0.1, 0.9, 51),
+                "normal_strength": skin.normal_strength.value,  # random.randint(1, 2),
+                "roughness_multiplier": skin.roughness_multiplier,  # RandomUniformDiscrete(1.5, 2.0, 51),
+                "dark_areas": skin.dark_areas,  # RandomUniformDiscrete(0.0, 2.0, 101),
+                "light_areas": skin.light_areas,  # RandomUniformDiscrete(0.0, 2.0, 101),
+                "freckles": skin.freckles.value,  # RandomUniformDiscrete(0.0, 0.5, 101),
+                "splotches": skin.splotches.value,  # RandomUniformDiscrete(0.0, 0.5, 101),
+                "beauty_spots_amount_": skin.beauty_spots_amount_,  # random.randint(0, 100),  # TODO clarify what this is
+                "beauty_spots_amount": skin.beauty_spots_amount,  # RandomUniformDiscrete(0.0, 1.0, 101),
+                "beauty_spots_opacity": skin.beauty_spots_opacity,  # RandomUniformDiscrete(0.0, 0.5, 101),
+                "sagging": skin.sagging,  # RandomUniformDiscrete(0.3, 1.0, 15),
+                "wrinkles": skin.wrinkles  # RandomUniformDiscrete(5.0, 20.0, 51)
+            },
+            "eyes": {
+                "iris_color": eyes.iris_color,  # [random.random(), random.random(), random.random(), 1.00],
+                "eyebrows_style": eyes.eyebrows_style,  # "random",
+                "eyebrows_length": eyes.eyebrows_length,  # None,  # TODO implement
+                "eyelashes_lenght": eyes.eyelashes_lenght,  # None,  # TODO implement
+                "hair_lightness": eyes.hair_lightness,  # 0.3,
+                "hair_redness": eyes.hair_redness,  # 0.9,
+                "hair_roughness": eyes.hair_roughness  # 0.3,
+            },
+            "hair": {
+                "hair_style": hair.hair_style,  # random.choice(list(generator_params.dict_hair[gender].keys())),
+                "length": hair.length,  # hairstyle seems not to be evaluated
+                "lightness": hair.lightness,
+                "redness": hair.redness,
+                "roughness": hair.roughness,
+                "salt_and_pepper": hair.salt_and_pepper,
+                "roots": hair.roots,
+                "hue": hair.hue
+            },
+            "beard": {
+                "beard_style": beard.beard_style if sGender == "male" else None,
+                "shadow_mustache": beard.shadow_mustache if sGender == "male" else 0,
+                "shadow_beard": beard.shadow_beard if sGender == "male" else 0,
+            },
+            "makeup": {
+                "foundation_amount": makeup.foundation_amount,  # 0,
+                "foundation_color": makeup.foundation_color,  # [0.655761, 0.332872, 0.191478, 1.000000],
+                "blush_opacity": makeup.blush_opacity,  # RandomUniformDiscrete(0.0, 1.0, 101),
+                "blush_color": makeup.blush_color,  # 0.553053, 0.138596, 0.109141, 1.000000],
+                "eyeshadow_opacity": makeup.eyeshadow_opacity,  # RandomUniformDiscrete(0.0, 1.0, 101),
+                "eyeshadow_color": makeup.eyeshadow_color,  # [0.239424, 0.041744, 0.013199, 1.000000],
+                "lipstick_opacity": makeup.lipstick_opacity,  # RandomUniformDiscrete(0.0, 1.0, 101),
+                "lipstick_color": makeup.lipstick_color,  # [0.309741, 0.091615, 0.073231, 1.000000],
+                "eyeliner_opacity": makeup.eyeliner_opacity,  # RandomUniformDiscrete(0.0, 1.0, 101),
+                "eyeliner_color": makeup.eyeliner_color,  # [0.001578, 0.010979, 0.060677, 1.000000],
+            },
+            "outfit": {
+                "outfit_style": outfit.outfit_style,
+                "outfit_pattern": outfit.outfit_pattern,
+                "outfit_palette": outfit.outfit_palette,  # "RANDOM_FULL",
+                "outfit_color": outfit.outfit_color,  # "random",
+                "outfit_brightness": outfit.outfit_brightness,  # random.triangular(0.6, 1.4),
+                "outfit_saturation": outfit.outfit_saturation,  # random.triangular(0.8, 1.7),
+                "outfit_contrast": outfit.outfit_contrast,  # random.triangular(1.8, 2.4),
+            },
+            "footwear": {
+                "footwear_style": footwear.footwear_style,  # "random",
+                "footwear_color": footwear.footwear_color,  # "random",
+            },
+            "posefilename": self.human_obj.posefilename,
+        }
 
+        if sGender == "male":
+            if random.choice([True, False]):
+                new_params["beard"]["beard_style"] = None
 
+        with open(_filename, 'w') as fp:
+            json.dump(new_params, fp)
+
+    # enddef
 
 
 ###########################################################################################################
