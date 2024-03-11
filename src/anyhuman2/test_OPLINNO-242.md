@@ -4,14 +4,14 @@
 ### What changed?
 
 Added 
-    - `anyhuman2/labelling/mapping/eyebrows/Eyebrows_001.json`
-    - `anyhuman2/labelling/mapping/eyebrows/Eyebrows_002.json`
-    - `anyhuman2/labelling/mapping/eyebrows/Eyebrows_003.json`
-    - `anyhuman2/labelling/mapping/eyebrows/Eyebrows_004.json`
-    - `anyhuman2/labelling/mapping/eyebrows/Eyebrows_005.json`
-    - `anyhuman2/labelling/mapping/eyebrows/Eyebrows_006.json`
-    - `anyhuman2/labelling/mapping/eyebrows/Eyebrows_007.json`
-    - `anyhuman2/labelling/mapping/eyebrows/Eyebrows_008.json`
+    - `anyhuman2/labelling/mapping/eyebrows/Eyebrows_001.json`<\br>
+    - `anyhuman2/labelling/mapping/eyebrows/Eyebrows_002.json`<\br>
+    - `anyhuman2/labelling/mapping/eyebrows/Eyebrows_003.json`<\br> 
+    - `anyhuman2/labelling/mapping/eyebrows/Eyebrows_004.json`<\br>
+    - `anyhuman2/labelling/mapping/eyebrows/Eyebrows_005.json`<\br>
+    - `anyhuman2/labelling/mapping/eyebrows/Eyebrows_006.json`<\br>
+    - `anyhuman2/labelling/mapping/eyebrows/Eyebrows_007.json`<\br>
+    - `anyhuman2/labelling/mapping/eyebrows/Eyebrows_008.json`<\br>
     - `anyhuman2/labelling/mapping/eyebrows/Eyebrows_009.json`
 
 Each json file contains WFLW labels [33-50] for each eyebrow style, `HG_Eyebrows_001 `through `HG_Eyebrows_009`
