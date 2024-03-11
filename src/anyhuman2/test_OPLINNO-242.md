@@ -37,10 +37,13 @@ Added new entry `sEyebrowLabelsPath` to `anyhuman2\personas\FILE_male.json`, as 
 }
 ```
 
-> Case FILE mode:
+> Case **FILE** mode:
+
 When a new human is created from `FILE_male.json` file, depending on eyebrow style set in `dictHumGen_V4['hair']['eyebrows']['set']`, appropriate JSON file will be read from the path taken from `dictCustom['sEyebrowLabelsPath']`
 
 Suppose `dictHumGen_V4['hair']['eyebrows']['set']` = `Eyebrows_007` and `dictCustom['sEyebrowLabelsPath']` = `labelling//mapping//eyebrows//`then JSON file will be taken as `labelling//mapping//eyebrows//Eyebrows_007.json`
 
-> Case RANDOM mode:
+
+> Case **RANDOM** mode:
+
 When a new human is generated, appropriate JSON file will be read from the path mentioned in `dictCustom['sEyebrowLabelsPath']` by getting eyebrow style from HumGen3D API `human.hair.eyebrows.as_dict()['set']`
