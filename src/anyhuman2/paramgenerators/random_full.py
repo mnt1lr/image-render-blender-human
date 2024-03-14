@@ -176,8 +176,8 @@ def FullyRandomizeParams(params, generator_config, rnd):
             "browridge_loc_vertical": rnd.uniform(-1.0, 1.0),
             "forehead_size": rnd.uniform(-1.0, 1.0),
             "temple_size": rnd.uniform(-1.0, 1.0),
-            "aged_male": rnd.uniform(0, 2.0),
-            "aged_young": rnd.uniform(0, 2.0),
+            "aged_male": rnd.uniform(0, 1.5),
+            "aged_young": rnd.uniform(0, 1.5),
             "Male": Male,
             "LIVE_KEY_PERMANENT": 1.0,
             "LIVE_KEY_TEMP_": 0.0
