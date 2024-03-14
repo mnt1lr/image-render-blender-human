@@ -12,10 +12,17 @@ class GeneralRandomParameters():
         self.params:dict = params
         self.generator_config:dict = generator_config
         self.rnd = rnd
-        self.sGender:str = self.params.get("sGender", self.rnd.choice(["male", "female"]))
+        self.sGender:str = self.params["mParamConfig"].get("sGender", self.rnd.choice(["male", "female"]))
         
     
     def GetGender(self) -> str:
+        """Return the gender of the armature
+
+        Returns
+        -------
+        str
+            Gender information
+        """
         return self.sGender
     
     def ArmatureName(self) -> str:
@@ -40,10 +47,10 @@ class GeneralRandomParameters():
             dict consisting of subdirectories containing different models, outfits, footwear, hair styles,...
         """
         # Ignored Outfits
-        lIgnoredOutfitsFemale = ["Flight Suit", "Lab Tech", "Pirate", "BBQ"]
-        lIgnoredOutfitsMale = ["Lab Tech", "Pirate"]
+        lIgnoredOutfitsFemale:list = ["Flight Suit", "Lab Tech", "Pirate", "BBQ"]
+        lIgnoredOutfitsMale:list = ["Lab Tech", "Pirate"]
 
-        outfit_list = [
+        outfit_list:list = [
             item
             for item in self.generator_config.dict_clothes[self.sGender]
             if item not in (lIgnoredOutfitsMale + lIgnoredOutfitsFemale)
@@ -88,13 +95,13 @@ class GeneralRandomParameters():
         """
         # Gender specific actions
         if self.sGender == "female":
-            dFaceHair = {} # Facial hair
-            dBeardLength = {} # Beard length
+            dFaceHair:dict = {} # Facial hair
+            dBeardLength:dict = None # Beard length
             fMale = 0.0
         elif self.sGender == "male":
             # Coin flip for beard or no beard
             fMale = 1.0
-            dFaceHair = {} # Facial hair
+            dFaceHair:dict = {} # Facial hair
             if self.rnd.random() < 0.5:
                 sFaceHair = self.rnd.choice(list(self.generator_config.dict_face_hair["male"].values())) # Facial hair
                 dFaceHair = {
@@ -111,21 +118,21 @@ class GeneralRandomParameters():
                     "hue": self.rnd.uniform(0, 1.0),
                 }
                 # Randomize facial hair concerning length
-                addon_path = self.generator_config.dict_info["HumGenV4 Path"]
-                face_hair_path = sFaceHair.replace('/', '\\')
+                addon_path:str = self.generator_config.dict_info["HumGenV4 Path"]
+                face_hair_path:str = sFaceHair.replace('/', '\\')
                 with open(os.path.join(addon_path, face_hair_path), 'r') as f:
                     file = json.load(f)
                 dBeardLength = file
                 for key, value in enumerate(dBeardLength["hair_systems"]):
                     dBeardLength["hair_systems"][value].update({"length": self.rnd.uniform(0, 1.0)})
             else:
-                dBeardLength = {} # Empty
+                dBeardLength = None # Empty
             # endif
         # endif
 
 
         # Eye brows are part of the hair particle and can not be accessed via a dictionary, there we provide them as list
-        eyebrows = [
+        eyebrows:list = [
                 'Eyebrows_001',
                 'Eyebrows_002',
                 'Eyebrows_003',
@@ -144,7 +151,7 @@ class GeneralRandomParameters():
     def RandomizeSkin(self) -> str:
         """Select random skin texture from presets.
         """
-        texture = self.rnd.choice(list(self.generator_config.dict_textures[self.sGender].values()))
+        texture:str = self.rnd.choice(list(self.generator_config.dict_textures[self.sGender].values()))
         return(texture)
 
     def RandomizeHeight(self) -> tuple: 

@@ -52,7 +52,7 @@ from .labelling.cls_label_skeleton import BoneLabel
 
 class HumGenWrapper:
     @staticmethod
-    def get_installed_humgen_version():
+    def get_installed_humgen_version() -> str:
         humgen_version = None  # Default value if addon not found
         for mod in addon_utils.modules():
             if mod.bl_info.get("name") == "Human Generator 3D":
@@ -332,21 +332,25 @@ class HumGenWrapper:
         try:
             if "dictCustom" in generatedParams.keys():
                 dictCustom:dict = generatedParams["dictCustom"]
-                dictHumGenV4:dict = generatedParams["dictHumGen_V4"]
+                self.dictHumGenV4:dict = generatedParams["dictHumGen_V4"]
                 sGender:str = dictCustom["sGender"]
                 sName:str = dictCustom["sArmatureName"]
                 self.dBeardLength:dict = dictCustom["dBeardLength"]
                 # Get preset for selected gender
                 self.chosen_option = self.Human.get_preset_options(sGender)
                 # Use previously generated HumGenV4 compatible directory
-                self.human_obj = self.Human.from_preset(dictHumGenV4)
+                self.human_obj = self.Human.from_preset(self.dictHumGenV4)
                 # If dbeardLength is not empty (False), custom parameters must be loaded after human has been created
-                if sGender == 'male' and bool(dictCustom["dBeardLength"]) == True:
-                    for i, key in enumerate(self.dBeardLength["hair_systems"]):
-                        # obtain the particle system which is connected to the hair system
-                        particle_system = self.human_obj.hair.particle_systems[key].settings.name
-                        # Set the length of the respective particle system to the value in the dict
-                        bpy.data.particles[particle_system].child_length = self.dBeardLength["hair_systems"][key]["length"]
+                if sGender == 'male' and self.dBeardLength is not None:
+                    try:
+                        for i, key in enumerate(self.dBeardLength["hair_systems"]):
+                            # obtain the particle system which is connected to the hair system
+                            particle_system = self.human_obj.hair.particle_systems[key].settings.name
+                            # Set the length of the respective particle system to the value in the dict
+                            bpy.data.particles[particle_system].child_length = self.dBeardLength["hair_systems"][key]["length"]
+                    except KeyError:
+                        raise KeyError(f"The key '{self.dBeardLength}' and '{self.dictHumGenV4['hair']['face_hair']['set']}' is not present in the dictionary.")
+
                 else:
                     pass
                 # endif
@@ -381,10 +385,10 @@ class HumGenWrapper:
             else:
                 if generatedParams["keys"]["Male"] >= 0.5:
                     sGender = "male"
-                    dictHumGenV4 = generatedParams
+                    self.dictHumGenV4 = generatedParams
                 else:
                     sGender = "female"
-                    dictHumGenV4 = generatedParams
+                    self.dictHumGenV4 = generatedParams
                 # endif
             # endif
             # Rename
@@ -392,8 +396,7 @@ class HumGenWrapper:
                 self.human_obj.name = sName
             return self.human_obj.props['body_obj']
         except KeyError:
-            print("KeyError: Please check if the dictionary contains the required keys.")
-
+            raise KeyError(f"The key '{dictCustom}' is not present in the dictionary.")
     # enddef
 
 

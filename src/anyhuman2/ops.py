@@ -40,6 +40,7 @@ from anybase import convert
 from .cls_humgen import SingletonHumGenWrapper
 
 from .paramgenerators import ComputeParams
+from .paramgenerators import SaveGeneratedParams
 
 try:
     from HumGen3D import Human as HG_Human
@@ -107,12 +108,14 @@ def GenerateHuman(_dicParams, **kwargs):
     xHumanGenerator = SingletonHumGenWrapper()
 
     overwrite = _dicParams.get("mOverwrite", {})
-
+    saveJSON = _dicParams["mParamConfig"].get("bSave", {})
     # gender = _dicParams["sGender"]
 
     # first compute the parameters that should be used for the creation of the human
     generated_params:dict = ComputeParams(mode, _dicParams, overwrite, xHumanGenerator.generator_config, rnd)
-
+    # Save to json File if bSavein in mParamConfig is True
+    SaveGeneratedParams(_dicParams, generated_params)
+        
     # apply
     # params['posefilename'] =_dicParams.get('sPosefile')
 
