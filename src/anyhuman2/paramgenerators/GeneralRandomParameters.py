@@ -12,7 +12,7 @@ class GeneralRandomParameters():
         self.params:dict = params
         self.generator_config:dict = generator_config
         self.rnd = rnd
-        self.sGender:str = self.params["mParamConfig"].get("sGender", self.rnd.choice(["male", "female"]))
+        self.sGender:str = self.params["mParamConfig"].get("sGender", self.rnd.choice(["male", "female"])) if "mParamConfig" in self.params else self.rnd.choice(["male", "female"])
         
     
     def GetGender(self) -> str:
@@ -170,6 +170,7 @@ class GeneralRandomParameters():
         # endif
 
         return(fHeight_150, fHeight_200, height)
+    
     
     ############################################################################################
     def RandomUniformDiscrete(self, _fMin, _fMax, _iCount=101):

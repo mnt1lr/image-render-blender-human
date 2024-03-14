@@ -108,7 +108,6 @@ def GenerateHuman(_dicParams, **kwargs):
     xHumanGenerator = SingletonHumGenWrapper()
 
     overwrite = _dicParams.get("mOverwrite", {})
-    saveJSON = _dicParams["mParamConfig"].get("bSave", {})
     # gender = _dicParams["sGender"]
 
     # first compute the parameters that should be used for the creation of the human

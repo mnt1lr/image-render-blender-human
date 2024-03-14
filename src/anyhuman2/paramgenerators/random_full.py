@@ -47,7 +47,10 @@ def FullyRandomizeParams(params, generator_config, rnd):
     ----------
     params : dict
         set of parameter controlling the randomization
-
+    generator_config : dict
+        dictionary containing parameters (clothing, beard styles, hair styles,...) obtained from HumgenV4     
+    rnd : instance
+        for random number generation
     Returns
     -------
     dict
@@ -66,7 +69,7 @@ def FullyRandomizeParams(params, generator_config, rnd):
         "age": {
             "set": rnd.randrange(20, 81),
             "age_color": 0.0,
-            "age_wrinkles": 0.0
+            "age_wrinkles": rnd.uniform(0, 8.0)
             },
         "keys": {
             "Forearm Length": rnd.uniform(0, 1.0),
@@ -173,8 +176,8 @@ def FullyRandomizeParams(params, generator_config, rnd):
             "browridge_loc_vertical": rnd.uniform(-1.0, 1.0),
             "forehead_size": rnd.uniform(-1.0, 1.0),
             "temple_size": rnd.uniform(-1.0, 1.0),
-            "aged_male": rnd.uniform(-1.0, 1.0),
-            "aged_young": rnd.uniform(-1.0, 1.0),
+            "aged_male": rnd.uniform(0, 2.0),
+            "aged_young": rnd.uniform(0, 2.0),
             "Male": Male,
             "LIVE_KEY_PERMANENT": 1.0,
             "LIVE_KEY_TEMP_": 0.0
