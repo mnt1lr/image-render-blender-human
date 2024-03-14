@@ -381,6 +381,14 @@ class HumGenWrapper:
                     sJsonFile = self.GetAbsPath(_sFile=sWFLWLableFile)
                     self.xBoneLabel.ImportSkeletonData(_sSkeletonDataFile=sJsonFile)
                 # endif
+
+                # get eyebrow labels
+                if "sEyebrowLabelsPath" in dictCustom:
+                    sEyebrowStyle = self.dictHumGenV4['hair']['eyebrows']['set']
+                    sLabelFile = dictCustom['sEyebrowLabelsPath'] + sEyebrowStyle + ".json"
+                    sEyebrowLabelsFile = self.GetAbsPath(_sFile=sLabelFile)
+                    self.xBoneLabel.UpdateEyebrowLabels(_sEyebrowStyle=sEyebrowStyle, _labelFile=sEyebrowLabelsFile)
+
             # case: only humgen dictionary
             else:
                 if generatedParams["keys"]["Male"] >= 0.5:
