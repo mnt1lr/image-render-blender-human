@@ -317,7 +317,6 @@ class HumGenWrapper:
         HumGenV4 as_dict() + some additional parameters such as gender, pose, labels,...
         dictAnyhuman: dictionary, containing information about the human that will be generated.
         Parameters:
-            - params (dict): catharsys like dictionary
             - generatedParams (dict): dictAnyhuman or standard HumGenV4 dict
             Returns:
             - dictName (dict)
