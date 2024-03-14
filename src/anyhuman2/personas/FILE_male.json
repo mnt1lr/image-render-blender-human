@@ -5,7 +5,7 @@
         "bOpenPoseHandLabels": true,
         "sOpenposeHandLabelFile": "labelling//mapping//openpose_hand_humgen.json",
         "bFacialRig": true,
-        "sWFLWLableFile": "labelling//mapping//WFLW_bones.json",
+        "sWFLWLableFile": "labelling//mapping//WFLW_bones_eye009.json",
         "sPoseFilename": {
             "set": null
         },
