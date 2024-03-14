@@ -1,0 +1,76 @@
+{
+  "lLabelVertices": [
+    {
+      "sObject": "HG_Body",
+      "lLabels": [
+        {
+          "sName": "WFLW_33",
+          "lVertices": [
+            3635,
+            3653,
+            3655
+          ]
+        },
+        {
+          "sName": "WFLW_34",
+          "lVertices": [
+            3624,
+            3627
+          ]
+        },
+        {
+          "sName": "WFLW_35",
+          "lVertices": [
+            3576,
+            3583,
+            3586,
+            3663
+          ]
+        },
+        {
+          "sName": "WFLW_36",
+          "lVertices": [
+            3578,
+            3581
+          ]
+        },
+        {
+          "sName": "WFLW_37",
+          "lVertices": [
+            3687,
+            3732,
+            3735
+          ]
+        },
+        {
+          "sName": "WFLW_38",
+          "lVertices": [
+            3683,
+            3686,
+            3690
+          ]
+        },
+        {
+          "sName": "WFLW_39",
+          "lVertices": [
+            3572
+          ]
+        },
+        {
+          "sName": "WFLW_40",
+          "lVertices": [
+            3577,
+            3584
+          ]
+        },
+        {
+          "sName": "WFLW_41",
+          "lVertices": [
+            3588,
+            3661
+          ]
+        }
+      ]
+    }
+  ]
+}
