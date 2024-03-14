@@ -128,21 +128,25 @@ def SaveGeneratedParams(params: dict, generated_params: dict):
     Returns:
         None
     """
-    saveJSON:dict = params["mParamConfig"].get("bSave", False)
-    filepath:dict = params["mParamConfig"].get("sFilePathJSON", {"sFilePathJSON": os.path.dirname(os.path.abspath(__file__))})
-    current_datetime:str = datetime.datetime.now()
-    filename = current_datetime.strftime("%Y-%m-%d_%H-%M-%S")
-    filepath_new:str = os.path.join(os.path.dirname(filepath['sFilePathJSON']), "personas", "human_" + str(filename) + ".json")
-    if saveJSON == True:
-        while os.path.exists(filepath_new) == True:
-            file = f"{os.path.splitext(os.path.basename(filepath_new))[0]}_{counter:04d}.json"
-            with open(file, "w") as json_file:
-                json.dump(generated_params, file)
-            counter += 1
-        if os.path.exists(filepath_new) == False:
-            with open(filepath_new, "w") as json_file:
-                json.dump(generated_params, json_file)
-    else:
+    try:
+        saveJSON:dict = params["mParamConfig"].get("bSave", False)
+        filepath:dict = params["mParamConfig"].get("sFilePathJSON", {"sFilePathJSON": os.path.dirname(os.path.abspath(__file__))})
+        current_datetime:str = datetime.datetime.now()
+        filename = current_datetime.strftime("%Y-%m-%d_%H-%M-%S")
+        filepath_new:str = os.path.join(os.path.dirname(filepath['sFilePathJSON']), "personas", "human_" + str(filename) + ".json")
+        if saveJSON == True:
+            while os.path.exists(filepath_new) == True:
+                file = f"{os.path.splitext(os.path.basename(filepath_new))[0]}_{counter:04d}.json"
+                with open(file, "w") as json_file:
+                    json.dump(generated_params, file)
+                counter += 1
+            if os.path.exists(filepath_new) == False:
+                with open(filepath_new, "w") as json_file:
+                    json.dump(generated_params, json_file)
+        else:
+            pass
+    except KeyError as e:
+        print(f"{e}: Could not save the generated parameters as a JSON file.")
         pass
 
 

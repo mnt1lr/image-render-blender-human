@@ -39,12 +39,12 @@ def _testHumanGeneration():
         # "ZWICKY",
         # "ZWICKY_GRID",
         # "RANDOM_FULL_GRID",
-         "RANDOM_FULL",
+        # "RANDOM_FULL",
         #  "RANDOM_REALISTIC",
         # "RANDOM_REALISTIC_GRID",
         # "PERSONA",
         # "LEGACY",
-        # "FILE", # HumGenV4 Test
+         "FILE", # HumGenV4 Test
 
     ]
     try:
@@ -66,7 +66,7 @@ def _testHumanGeneration():
                     "sId": "Seth",
                     "sMode": "FILE",
                     "mParamConfig": {
-                        "sFilename": "C:\\Users\\mnt1lr\\Documents\\work\\Cathy_HumGenV4_Development\\image-render-setup\\repos\image-render-blender-human\\src\\anyhuman2\\personas\\test.json"
+                        "sFilename": "C:\\Users\\mnt1lr\\Documents\\work\\Cathy_HumGenV4_Development\\image-render-setup\\repos\image-render-blender-human\\src\\anyhuman2\\personas\\FILE_male.json"
                     },
                 }
             )
