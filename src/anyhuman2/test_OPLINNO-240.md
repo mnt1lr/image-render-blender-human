@@ -1,4 +1,4 @@
-### About [OPLINNO-239](https://github.com/mnt1lr/image-render-blender-human/tree/feature/OPLINNO-239---add-WFLW-face-labels):
+### About [OPLINNO-240](https://github.com/mnt1lr/image-render-blender-human/tree/feature/OPLINNO-240---add-missing-v4-WFLW-eyebrow-labels):
 
 
 - JSON files

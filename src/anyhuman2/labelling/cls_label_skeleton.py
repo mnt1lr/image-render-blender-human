@@ -107,6 +107,15 @@ class BoneLabel:
 
     # ************************************* BEGIN IMPORT FUNCTIONS ****************************************************
 
+    def UpdateEyebrowLabels(self, _sEyebrowStyle: str, _labelFile: str):
+        try:
+            with open(_labelFile, 'r') as jsonFile:
+                dictEyebrow = json.load(jsonFile)
+            self.CreateVertexGroups(_objMesh=self.objHGBody, _lLabelVertices=dictEyebrow["lLabelVertices"])
+        except FileNotFoundError as e:
+            print(f'{e}')
+    # enddef
+
     def ImportSkeletonData(self, _sSkeletonDataFile):
         # STEP 1: Parse input json and extract skeletal bones with constraints and vertex groups
         dicSkeleton = self.ParseSkeleton(_sInSkeletonFile=_sSkeletonDataFile)
@@ -256,7 +265,6 @@ class BoneLabel:
                 self.AddBone(sSkeletonType, dicBone, _objArmature, _objRig)
         except ValueError as e:
             print(f"ERROR: {e}")
-
     # enddef
 
     # import skeleton from json file
@@ -268,7 +276,25 @@ class BoneLabel:
         except FileNotFoundError:
             print(f"{_sInSkeletonFile} not found")
             return {}
+    # enddef
 
+    def AddVertexGroupToMesh(self, _objMesh, _dicVertexGroup):
+        try:
+            for dictLabel in _dicVertexGroup["lLabels"]:
+                sVertexGroup = dictLabel["sName"]
+                lVertices = dictLabel["lVertices"]
+                iIndex = _objMesh.vertex_groups.find(sVertexGroup)
+                if iIndex == -1:
+                    print(f"Creating vertex group {sVertexGroup} in {_objMesh.name}")
+                    xVertexGroup = _objMesh.vertex_groups.new(name=sVertexGroup)
+                    xVertexGroup.add(lVertices, 1.0, "ADD")
+                else:
+                    print(f"Vertex Group {sVertexGroup} already exists in {_objMesh.name}, replacing")
+                    _objMesh.vertex_groups.remove(_objMesh.vertex_groups[iIndex])
+                    xVertexGroup = _objMesh.vertex_groups.new(name=sVertexGroup)
+                    xVertexGroup.add(lVertices, 1.0, "ADD")
+        except ValueError as e:
+            print(f"ERROR: {e}")
     # enddef
 
     # import and create vertex groups
@@ -277,22 +303,14 @@ class BoneLabel:
             sObject = dicVertexGroup["sObject"]
             try:
                 if sObject.startswith("HG_Body"):
-                    for dictLabel in dicVertexGroup["lLabels"]:
-                        if _objMesh.vertex_groups.find(dictLabel["sName"]) == -1:
-                            xVertexGroup = _objMesh.vertex_groups.new(name=dictLabel["sName"])
-                            xVertexGroup.add(dictLabel["lVertices"], 1.0, "ADD")
+                    self.AddVertexGroupToMesh(_objMesh=self.objHGBody, _dicVertexGroup=dicVertexGroup)
                 elif sObject.startswith("HG_Eyes"):
-                    for dictLabel in dicVertexGroup["lLabels"]:
-                        if self.objEyes.vertex_groups.find(dictLabel["sName"]) == -1:
-                            xVertexGroup = self.objEyes.vertex_groups.new(name=dictLabel["sName"])
-                            xVertexGroup.add(dictLabel["lVertices"], 1.0, "ADD")
+                    self.AddVertexGroupToMesh(_objMesh=self.objEyes, _dicVertexGroup=dicVertexGroup)
                 else:
                     print(f"Logic not implemented for Mesh/Object: {sObject}")
-
             except ValueError as e:
                 print(f"ERROR: {e}")
         # endfor
-
     # enddef
 
 
