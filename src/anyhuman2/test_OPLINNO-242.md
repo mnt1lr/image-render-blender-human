@@ -52,5 +52,7 @@ When a new human is generated, appropriate JSON file will be read from the path 
 ### How to test [OPLINNO-242](https://github.com/mnt1lr/image-render-blender-human/tree/feature/OPLINNO-242---Convert-Eyebrow-particles-to-mesh):
 
  - 1. In `anyhuman2\personas\FILE_male.json`, change `sEyebrowLabelsPath` if required
- - 2. In `anyhuman2\personas\FILE_male.json`, set `dictHumGen_V4['hair']['eyebrows']['set']` to required eyebrow style (for now you can test right eyebrows labels for `Eyebrows_005` & `Eyebrows_009`)
+ - 2. In `anyhuman2\personas\FILE_male.json`, set `dictHumGen_V4['hair']['eyebrows']['set']` to required eyebrow style, for now you can test
+    - `Eyebrows_005`
+    - `Eyebrows_009`
  - 3. TODO: add all labels for all eyebrows style for both left and right side
