@@ -243,6 +243,7 @@ class HumGenWrapper:
         absPath = os.path.join(sCurrentDirectory, _sFile)
         print(f"Absolute path: {absPath}")
         return absPath
+
     # enddef
 
     def CreateHumanFromJSON(self, _sJsonFile: str):
@@ -323,38 +324,41 @@ class HumGenWrapper:
         """
         # Armature name
 
-
         # ToDo: try except keyerror implementieren
         # Reading values from dict and splitting it to custom and HumGenV4 dicts
         # case: anyhuman dictionary (= custom dict + humgen dict
 
         try:
             if "dictCustom" in generatedParams.keys():
-                dictCustom:dict = generatedParams["dictCustom"]
-                self.dictHumGenV4:dict = generatedParams["dictHumGen_V4"]
-                sGender:str = dictCustom["sGender"]
-                sName:str = dictCustom["sArmatureName"]
-                self.dBeardLength:dict = dictCustom["dBeardLength"]
+                dictCustom: dict = generatedParams["dictCustom"]
+                self.dictHumGenV4: dict = generatedParams["dictHumGen_V4"]
+                sGender: str = dictCustom["sGender"]
+                sName: str = dictCustom["sArmatureName"]
+                self.dBeardLength: dict = dictCustom["dBeardLength"]
                 # Get preset for selected gender
                 self.chosen_option = self.Human.get_preset_options(sGender)
                 # Use previously generated HumGenV4 compatible directory
                 self.human_obj = self.Human.from_preset(self.dictHumGenV4)
                 # If dbeardLength is not empty (False), custom parameters must be loaded after human has been created
-                if sGender == 'male' and self.dBeardLength is not None:
+                if sGender == "male" and self.dBeardLength is not None:
                     try:
                         for i, key in enumerate(self.dBeardLength["hair_systems"]):
                             # obtain the particle system which is connected to the hair system
                             particle_system = self.human_obj.hair.particle_systems[key].settings.name
                             # Set the length of the respective particle system to the value in the dict
-                            bpy.data.particles[particle_system].child_length = self.dBeardLength["hair_systems"][key]["length"]
+                            bpy.data.particles[particle_system].child_length = self.dBeardLength["hair_systems"][key][
+                                "length"
+                            ]
                     except KeyError:
-                        raise KeyError(f"The key '{self.dBeardLength}' and '{self.dictHumGenV4['hair']['face_hair']['set']}' is not present in the dictionary.")
+                        raise KeyError(
+                            f"The key '{self.dBeardLength}' and '{self.dictHumGenV4['hair']['face_hair']['set']}' is not present in the dictionary."
+                        )
 
                 else:
                     pass
                 # endif
                 # Set facial rig
-                if dictCustom["bFacialRig"] == True :
+                if dictCustom["bFacialRig"] == True:
                     self.human_obj.expression.load_facial_rig()
                 else:
                     pass
@@ -366,7 +370,7 @@ class HumGenWrapper:
                     print("Human not generated successfully")
                     print(f"ERROR: {e}")
                     return
-                # add hand labels
+
                 if "sOpenposeHandLabelFile" in dictCustom:
                     sHandLabelFile = dictCustom["sOpenposeHandLabelFile"]
                     objRig = self.human_obj.objects.rig
@@ -374,17 +378,23 @@ class HumGenWrapper:
                     sJsonFile = self.GetAbsPath(_sFile=sHandLabelFile)
                     self.xBoneLabel.AddHandLabels(_sLabelFile=sJsonFile, _objArmature=objArmature, _objRig=objRig)
                 # endif
-                # add WFLW labels
+
                 if "sWFLWLableFile" in dictCustom:
                     sWFLWLableFile = dictCustom["sWFLWLableFile"]
                     sJsonFile = self.GetAbsPath(_sFile=sWFLWLableFile)
-                    self.xBoneLabel.ImportSkeletonData(_sSkeletonDataFile=sJsonFile)
+                    self.xBoneLabel.ImportSkeletonData(_sSkeletonDataFile=sJsonFile, _replaceVertexGroups=True)
                 # endif
 
-                # get eyebrow labels
+                if "sIMSLabels" in dictCustom:
+                    sIMSLabelFile = dictCustom["sIMSLabels"]
+                    sJsonFile = self.GetAbsPath(_sFile=sIMSLabelFile)
+                    self.xBoneLabel.ImportSkeletonData(_sSkeletonDataFile=sJsonFile, _replaceVertexGroups=False)
+                # endif
+
+                # NOTE: Keep eyebrows labels in end
                 if "sEyebrowLabelsPath" in dictCustom:
-                    sEyebrowStyle = self.dictHumGenV4['hair']['eyebrows']['set']
-                    sLabelFile = dictCustom['sEyebrowLabelsPath'] + sEyebrowStyle + ".json"
+                    sEyebrowStyle = self.dictHumGenV4["hair"]["eyebrows"]["set"]
+                    sLabelFile = dictCustom["sEyebrowLabelsPath"] + sEyebrowStyle + ".json"
                     sEyebrowLabelsFile = self.GetAbsPath(_sFile=sLabelFile)
                     self.xBoneLabel.UpdateEyebrowLabels(_sEyebrowStyle=sEyebrowStyle, _labelFile=sEyebrowLabelsFile)
 
@@ -401,9 +411,10 @@ class HumGenWrapper:
             # Rename
             if sName is not None:
                 self.human_obj.name = sName
-            return self.human_obj.props['body_obj']
+            return self.human_obj.props["body_obj"]
         except KeyError:
             raise KeyError(f"The key '{dictCustom}' is not present in the dictionary.")
+
     # enddef
 
 
