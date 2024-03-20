@@ -382,13 +382,13 @@ class HumGenWrapper:
                 if "sWFLWLableFile" in dictCustom:
                     sWFLWLableFile = dictCustom["sWFLWLableFile"]
                     sJsonFile = self.GetAbsPath(_sFile=sWFLWLableFile)
-                    self.xBoneLabel.ImportSkeletonData(_sSkeletonDataFile=sJsonFile, _replaceVertexGroups=True)
+                    self.xBoneLabel.ImportSkeletonData(_sSkeletonDataFile=sJsonFile)
                 # endif
 
                 if "sIMSLabels" in dictCustom:
                     sIMSLabelFile = dictCustom["sIMSLabels"]
                     sJsonFile = self.GetAbsPath(_sFile=sIMSLabelFile)
-                    self.xBoneLabel.ImportSkeletonData(_sSkeletonDataFile=sJsonFile, _replaceVertexGroups=False)
+                    self.xBoneLabel.ImportSkeletonData(_sSkeletonDataFile=sJsonFile, _bReplaceVertexGroups=False)
                 # endif
 
                 # NOTE: Keep eyebrows labels in end
