@@ -109,18 +109,29 @@ class BoneLabel:
 
     def UpdateEyebrowLabels(self, _sEyebrowStyle: str, _labelFile: str):
         try:
-            with open(_labelFile, 'r') as jsonFile:
+            with open(_labelFile, "r") as jsonFile:
                 dictEyebrow = json.load(jsonFile)
-            self.CreateVertexGroups(_objMesh=self.objHGBody, _lLabelVertices=dictEyebrow["lLabelVertices"])
+            self.CreateVertexGroups(
+                _objMesh=self.objHGBody, _lLabelVertices=dictEyebrow["lLabelVertices"], _replaceExisting=True
+            )
         except FileNotFoundError as e:
-            print(f'{e}')
+            print(f"{e}")
+
     # enddef
 
-    def ImportSkeletonData(self, _sSkeletonDataFile):
+    def ImportSkeletonData(self, _sSkeletonDataFile, _replaceVertexGroups):
         # STEP 1: Parse input json and extract skeletal bones with constraints and vertex groups
         dicSkeleton = self.ParseSkeleton(_sInSkeletonFile=_sSkeletonDataFile)
         # STEP 2: Add vertex groups to objHGBody (Mesh)
-        self.CreateVertexGroups(_objMesh=self.objHGBody, _lLabelVertices=dicSkeleton["lLabelVertices"])
+        if "lLabelVertices" in dicSkeleton:
+            lLabelVertices = dicSkeleton["lLabelVertices"]
+        else:
+            lLabelVertices = []
+        self.CreateVertexGroups(
+            _objMesh=self.objHGBody,
+            _lLabelVertices=lLabelVertices,
+            _replaceExisting=_replaceVertexGroups,
+        )
         # STEP 3: Add bones
         self.ImportSkeletonBones(_dicSkeleton=dicSkeleton, _objArmature=self.objArmature, _objRig=self.objRig)
         # STEP 4: Add constraints
@@ -171,17 +182,19 @@ class BoneLabel:
             # add constraints
             # TODO: Implement switch (lConstraints) statement for faster execution
             for objConstraint in dicBone["lConstraints"]:
-                if objConstraint["sType"] == "STRETCH_TO":
+                sContraintType = objConstraint["sType"]
+                print(f"Adding constraint {sContraintType} for posebone {sPoseBoneName}")
+                if sContraintType == "STRETCH_TO":
                     self.AddConstraintStretchTo(objPoseBone, objConstraint)
-                elif objConstraint["sType"] == "LIMIT_LOCATION":
+                elif sContraintType == "LIMIT_LOCATION":
                     self.AddConstraintLimitLocation(objPoseBone, objConstraint)
-                elif objConstraint["sType"] == "CHILD_OF":
+                elif sContraintType == "CHILD_OF":
                     self.AddConstraintChildOf(objPoseBone, objConstraint)
-                elif objConstraint["sType"] == "COPY_LOCATION":
+                elif sContraintType == "COPY_LOCATION":
                     self.AddConstraintCopyLocation(objPoseBone, objConstraint)
                 else:
-                    print("Error: new constraint %s found", objConstraint["sType"])
-            # endfor objConstraint in _dicBone
+                    print(f"Error: constraint {sContraintType} not implemented yet")
+            # endfor
 
         # get into object mode
         bpy.ops.object.mode_set(mode="OBJECT")
@@ -265,6 +278,7 @@ class BoneLabel:
                 self.AddBone(sSkeletonType, dicBone, _objArmature, _objRig)
         except ValueError as e:
             print(f"ERROR: {e}")
+
     # enddef
 
     # import skeleton from json file
@@ -276,9 +290,10 @@ class BoneLabel:
         except FileNotFoundError:
             print(f"{_sInSkeletonFile} not found")
             return {}
+
     # enddef
 
-    def AddVertexGroupToMesh(self, _objMesh, _dicVertexGroup):
+    def AddVertexGroupToMesh(self, _objMesh, _dicVertexGroup: dict, _replaceExisting=True):
         try:
             for dictLabel in _dicVertexGroup["lLabels"]:
                 sVertexGroup = dictLabel["sName"]
@@ -288,29 +303,38 @@ class BoneLabel:
                     print(f"Creating vertex group {sVertexGroup} in {_objMesh.name}")
                     xVertexGroup = _objMesh.vertex_groups.new(name=sVertexGroup)
                     xVertexGroup.add(lVertices, 1.0, "ADD")
-                else:
-                    print(f"Vertex Group {sVertexGroup} already exists in {_objMesh.name}, replacing")
+                elif _replaceExisting:
+                    print(f"Vertex Group {sVertexGroup} already exists in {_objMesh.name}, replacing as specified")
                     _objMesh.vertex_groups.remove(_objMesh.vertex_groups[iIndex])
                     xVertexGroup = _objMesh.vertex_groups.new(name=sVertexGroup)
                     xVertexGroup.add(lVertices, 1.0, "ADD")
+                else:
+                    print(f"Vertex Group {sVertexGroup} already exists in {_objMesh.name}")
+                    pass
         except ValueError as e:
             print(f"ERROR: {e}")
+
     # enddef
 
     # import and create vertex groups
-    def CreateVertexGroups(self, _objMesh, _lLabelVertices):
+    def CreateVertexGroups(self, _objMesh, _lLabelVertices, _replaceExisting=True):
         for dicVertexGroup in _lLabelVertices:
             sObject = dicVertexGroup["sObject"]
             try:
                 if sObject.startswith("HG_Body"):
-                    self.AddVertexGroupToMesh(_objMesh=self.objHGBody, _dicVertexGroup=dicVertexGroup)
+                    self.AddVertexGroupToMesh(
+                        _objMesh=self.objHGBody, _dicVertexGroup=dicVertexGroup, _replaceExisting=True
+                    )
                 elif sObject.startswith("HG_Eyes"):
-                    self.AddVertexGroupToMesh(_objMesh=self.objEyes, _dicVertexGroup=dicVertexGroup)
+                    self.AddVertexGroupToMesh(
+                        _objMesh=self.objEyes, _dicVertexGroup=dicVertexGroup, _replaceExisting=True
+                    )
                 else:
                     print(f"Logic not implemented for Mesh/Object: {sObject}")
             except ValueError as e:
                 print(f"ERROR: {e}")
         # endfor
+
     # enddef
 
 
