@@ -39,12 +39,12 @@ def _testHumanGeneration():
         # "ZWICKY",
         # "ZWICKY_GRID",
         # "RANDOM_FULL_GRID",
-        # "RANDOM_FULL",
+         "RANDOM_FULL",
         #  "RANDOM_REALISTIC",
         # "RANDOM_REALISTIC_GRID",
         # "PERSONA",
         # "LEGACY",
-         "FILE", # HumGenV4 Test
+        # "FILE", # HumGenV4 Test
 
     ]
     try:
@@ -66,7 +66,7 @@ def _testHumanGeneration():
                     "sId": "Seth",
                     "sMode": "FILE",
                     "mParamConfig": {
-                        "sFilename": "C:\\Users\\mnt1lr\\Documents\\work\\Cathy_HumGenV4_Development\\image-render-setup\\repos\image-render-blender-human\\src\\anyhuman2\\personas\\FILE_male.json"
+                        "sFilename": "C:\\Users\\mnt1lr\\Documents\\work\\Cathy_HumGenV4_Development\\image-render-setup\\repos\image-render-blender-human\\src\\anyhuman2\\personas\\test.json"
                     },
                 }
             )
@@ -99,7 +99,13 @@ def _testHumanGeneration():
                 {
                     "sId": "Armature.001",
                     "sMode": "RANDOM_FULL",
-                    "mParamConfig": {"sGender": "female"},
+                    "mParamConfig": {"sGender": "female", 
+                                     "bOpenPoseHandLabels": True,
+                                     "sOpenposeHandLabelFile": "labelling//mapping//openpose_hand_humgen.json",
+                                     "bFacialRig": True,
+                                     "sWFLWLableFile": "labelling//mapping//WFLW_labels_anyhuman.json",
+                                     "sIMSLabels": "labelling//mapping//IMS_bones.json",
+                                     "sEyebrowLabelsPath": "labelling//mapping//eyebrows//"},
                 }
             )
             bpy.context.scene.cursor.location[0] += dx
@@ -115,7 +121,7 @@ def _testHumanGeneration():
             
 
         if "RANDOM_FULL_GRID" in active_tests:
-            for y in range(0, 2):
+            for y in range(0, 5):
                 bpy.context.scene.cursor.location[0] = 0
                 for x in range(0, 4):
                     bpy.context.scene.cursor.location[0] += dx
