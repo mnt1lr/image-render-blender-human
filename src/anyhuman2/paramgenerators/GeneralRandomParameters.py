@@ -25,6 +25,18 @@ class GeneralRandomParameters():
         """
         return self.sGender
     
+    def GetPreset(self) -> dict:
+        """Randomly select preset and returns path to JSON
+        """
+        dPresets:dict = self.generator_config.dict_models[self.sGender]
+        sPreset:str = self.rnd.choice(list(dPresets.keys()))
+        sPresetPath:str = dPresets[sPreset]
+        addon_path:str = self.generator_config.dict_info["HumGenV4 Path"]
+        preset_path:str = sPresetPath.replace('/', '\\')
+        with open(os.path.join(addon_path, preset_path), 'r') as f:
+            dPreset:dict = json.load(f)
+        return dPreset
+
     def ArmatureName(self) -> str:
         """Name the armature if any information is available
         """
