@@ -1,6 +1,7 @@
 
 import json
 import os
+import numpy as np
 
 
 class GeneralRandomParameters():
@@ -14,6 +15,18 @@ class GeneralRandomParameters():
         self.rnd = rnd
         self.sGender:str = self.params["mParamConfig"].get("sGender", self.rnd.choice(["male", "female"])) if "mParamConfig" in self.params else self.rnd.choice(["male", "female"])
         
+    def gauss_with_min_max(self, min_value, max_value) -> float:
+        # Compute mean and standard deviation based on min and max values
+        mean = (min_value + max_value) / 2
+        std_dev = (max_value - min_value) / 6  # Using 99.7% coverage rule for Gaussian distribution
+
+        # Generate Gaussian distributed random numbers
+        gauss_number = self.rnd.gauss(mean, std_dev)
+
+        # Apply linear transformation to map to desired range [min_value, max_value]
+        transformed_number = np.clip(gauss_number, min_value, max_value)
+
+        return transformed_number  
     
     def GetGender(self) -> str:
         """Return the gender of the armature
@@ -118,16 +131,16 @@ class GeneralRandomParameters():
                 sFaceHair = self.rnd.choice(list(self.generator_config.dict_face_hair["male"].values())) # Facial hair
                 dFaceHair = {
                     "set": sFaceHair,
-                    "lightness": self.rnd.uniform(0, 1.0),
-                    "redness": self.rnd.uniform(0, 1.0),
-                    "roughness": self.rnd.uniform(0, 1.0),
-                    "salt_and_pepper": self.rnd.uniform(0, 1.0),
-                    "roots": self.rnd.uniform(0, 1.0),
-                    "root_lightness": self.rnd.uniform(0, 5.0),
-                    "root_redness": self.rnd.uniform(0, 1.0),
-                    "roots_hue": self.rnd.uniform(0, 1.0),
+                    "lightness": self.gauss_with_min_max(0, 1.0),
+                    "redness": self.gauss_with_min_max(0, 1.0),
+                    "roughness": self.gauss_with_min_max(0, 1.0),
+                    "salt_and_pepper": self.gauss_with_min_max(0, 1.0),
+                    "roots": self.gauss_with_min_max(0, 1.0),
+                    "root_lightness": self.gauss_with_min_max(0, 5.0),
+                    "root_redness": self.gauss_with_min_max(0, 1.0),
+                    "roots_hue": self.gauss_with_min_max(0, 1.0),
                     "fast_or_accurate": 1.0, # Accurate
-                    "hue": self.rnd.uniform(0, 1.0),
+                    "hue": self.gauss_with_min_max(0, 1.0),
                 }
                 # Randomize facial hair concerning length
                 addon_path:str = self.generator_config.dict_info["HumGenV4 Path"]
@@ -136,7 +149,7 @@ class GeneralRandomParameters():
                     file = json.load(f)
                 dBeardLength = file
                 for key, value in enumerate(dBeardLength["hair_systems"]):
-                    dBeardLength["hair_systems"][value].update({"length": self.rnd.uniform(0, 1.0)})
+                    dBeardLength["hair_systems"][value].update({"length": self.gauss_with_min_max(0, 1.0)})
             else:
                 dBeardLength = None # Empty
             # endif
@@ -172,7 +185,7 @@ class GeneralRandomParameters():
 
 
         # Height generation, see HumGenV4 ...\height.py
-        height = self.rnd.uniform(140, 200) # in cm
+        height = self.gauss_with_min_max(140, 200) # in cm
         if height > 184:
             fHeight_200 = (height - 184) / (200 - 184)
             fHeight_150 = 0.0
