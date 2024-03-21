@@ -99,13 +99,15 @@ def _testHumanGeneration():
                 {
                     "sId": "Armature.001",
                     "sMode": "RANDOM_FULL",
-                    "mParamConfig": {"sGender": "female", 
-                                     "bOpenPoseHandLabels": True,
-                                     "sOpenposeHandLabelFile": "labelling//mapping//openpose_hand_humgen.json",
-                                     "bFacialRig": True,
-                                     "sWFLWLableFile": "labelling//mapping//WFLW_labels_anyhuman.json",
-                                     "sIMSLabels": "labelling//mapping//IMS_bones.json",
-                                     "sEyebrowLabelsPath": "labelling//mapping//eyebrows//"},
+                    "mParamConfig": {
+                        "sGender": "female",
+                        "bOpenPoseHandLabels": True,
+                        "sOpenposeHandLabelFile": "labelling//mapping//openpose_hand_humgen.json",
+                        "bFacialRig": True,
+                        "sWFLWLableFile": "labelling//mapping//WFLW_labels_anyhuman.json",
+                        "sIMSLabels": "labelling//mapping//IMS_bones.json",
+                        "sEyebrowLabelsPath": "labelling//mapping//eyebrows//"
+                    },
                 }
             )
             bpy.context.scene.cursor.location[0] += dx
@@ -113,12 +115,20 @@ def _testHumanGeneration():
                 {
                     "sId": "Armature.002",
                     "sMode": "RANDOM_FULL",
-                    "mParamConfig": {"sGender": "male"},
+                    "mParamConfig": {
+                        "sGender": "male",
+                        "bOpenPoseHandLabels": True,
+                        "sOpenposeHandLabelFile": "labelling//mapping//openpose_hand_humgen.json",
+                        "bFacialRig": True,
+                        "sWFLWLableFile": "labelling//mapping//WFLW_labels_anyhuman.json",
+                        "sIMSLabels": "labelling//mapping//IMS_bones.json",
+                        "sEyebrowLabelsPath": "labelling//mapping//eyebrows//"
+                    },
                 }
             )
             bpy.context.scene.cursor.location[1] += dy
         # endif
-            
+
 
         if "RANDOM_FULL_GRID" in active_tests:
             for y in range(0, 5):
