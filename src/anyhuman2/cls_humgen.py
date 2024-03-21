@@ -346,9 +346,7 @@ class HumGenWrapper:
                             # obtain the particle system which is connected to the hair system
                             particle_system = self.human_obj.hair.particle_systems[key].settings.name
                             # Set the length of the respective particle system to the value in the dict
-                            bpy.data.particles[particle_system].child_length = self.dBeardLength["hair_systems"][key][
-                                "length"
-                            ]
+                            bpy.data.particles[particle_system].child_length = self.dBeardLength["hair_systems"][key]["length"]
                     except KeyError:
                         raise KeyError(
                             f"The key '{self.dBeardLength}' and '{self.dictHumGenV4['hair']['face_hair']['set']}' is not present in the dictionary."
