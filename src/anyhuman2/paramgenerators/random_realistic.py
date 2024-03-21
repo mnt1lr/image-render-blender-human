@@ -61,6 +61,7 @@ def RealisticRandomizeParams(params, generator_config, rnd):
     """
     
     universal_params = GeneralRandomParameters(params, generator_config, rnd)
+    dPreset = universal_params.GetPreset()
     sArmatureName = universal_params.ArmatureName()
     Male, dFaceHair, dBeardLength, sRegularHair, sEyebrows = universal_params.RandomizeHair()
     sGender = universal_params.GetGender()
@@ -69,174 +70,68 @@ def RealisticRandomizeParams(params, generator_config, rnd):
     sFootwear = universal_params.RandomFootwear()
     sSkinTexture = universal_params.RandomizeSkin()
     # HumGenV4 Config
-    NewHumGenV4Config = {
-        "age": {"set": rnd.randrange(20, 81), "age_color": 0.0, "age_wrinkles": 0.0},
-        "keys": {
-            "Forearm Length": 0.0,
-            "Forearm Thickness": 0.0,
-            "Hand Length": 0.0,
-            "Hand Thickness": 0.0,
-            "Hand Width": 0.0,
-            "Upper Arm Length": 0.0,
-            "Upper Arm Thickness": 0.0,
-            "Neck Length": 0.0,
-            "Neck Thickness": 0.0,
-            "Foot Length": 0.0,
-            "Shin Length": 0.0,
-            "Shin Thickness": 0.0,
-            "Thigh Length": 0.0,
-            "Thigh Thickness": 0.0,
-            "height_150": height_150,
-            "height_200": height_200,
-            "muscular": universal_params.RandomUniformDiscrete(0, 1, 11), # From Anyhuman1
-            "overweight": universal_params.RandomUniformDiscrete(0, 1, 11), # From Anyhuman1
-            "skinny": universal_params.RandomUniformDiscrete(0, 0.5, 11), # From Anyhuman1
-            "Back Muscles": 0.0,
-            "Biceps": 0.0,
-            "Calves Muscles": 0.0,
-            "Chest Muscles": 0.0,
-            "Forearm Muscles": 0.0,
-            "Hamstring Muscles": 0.0,
-            "Lower Butt Muscles": 0.0,
-            "Quad Muscles": 0.0,
-            "Shoulder Muscles": 0.0,
-            "Traps Muscles": 0.0,
-            "Triceps": 0.0,
-            "Upper Butt Muscles": 0.0,
-            "Stylized": 0.0,
-            "Belly Size": 0.0,
-            "Breast Size": 0.0,
-            "Chest Height": 0.0,
-            "Chest Width": 0.0,
-            "Hips Height": 0.0,
-            "Hips Size": 0.0,
-            "Shoulder Width": 0.0,
-            "Waist Thickness": 0.0,
-            "asian": 0.0,
-            "black": 0.5,
-            "caucasian": 0.0,
-            "variation_1": 0.0,
-            "variation_10": 0.0,
-            "variation_11": 0.0,
-            "variation_2": 0.0,
-            "variation_3": 0.0,
-            "variation_4": 1.0,
-            "variation_5": 0.0,
-            "variation_6": 0.0,
-            "variation_7": 0.0,
-            "variation_8": 0.0,
-            "variation_9": 0.0,
-            "cheek_fullness": 0.0,
-            "cheek_zygomatic_bone": 0.0,
-            "cheek_zygomatic_proc": 0.0,
-            "chin_dimple": 0.0,
-            "chin_height": 0.0,
-            "chin_size": 0.0,
-            "chin_width": 0.0,
-            "ear_antihelix_shape": 0.0,
-            "ear_height": 0.0,
-            "ear_lobe_size": 0.0,
-            "ear_turn": 0.0,
-            "ear_width": 0.0,
-            "Eye Depth": 0.0,
-            "Eye Distance": 0.0,
-            "Eye Height": 0.0,
-            "eyelid_fat_pad": 0.0,
-            "eyelid_rotation": 0.0,
-            "eyelid_shift_horizontal": 0.0,
-            "eyelid_shift_vertical": 0.0,
-            "eye_height": 0.0,
-            "eye_orbit_size": 0.0,
-            "eye_tilt": 0.0,
-            "eye_width": 0.0,
-            "jaw_location_horizontal": 0.0,
-            "jaw_location_vertical": 0.0,
-            "jaw_width": 0.0,
-            "muzzle_location_horizontal": 0.0,
-            "muzzle_location_vertical": 0.0,
-            "lip_cupid_bow": 0.0,
-            "lip_height": 0.0,
-            "lip_location": 0.0,
-            "lip_offset": 0.0,
-            "lip_width": 0.0,
-            "nose_angle": 0.0,
-            "nose_bridge_height": 0.0,
-            "nose_bridge_width": 0.0,
-            "nose_height": 0.0,
-            "nose_location": 0.0,
-            "nose_nostril_flare": 0.0,
-            "nose_nostril_turn": 0.0,
-            "nose_tip_angle": 0.0,
-            "nose_tip_length": 0.0,
-            "nose_tip_size": 0.0,
-            "nose_tip_width": 0.0,
-            "Eye Scale": 0.0,
-            "browridge_center_size": 0.0,
-            "browridge_loc_horizontal": 0.0,
-            "browridge_loc_vertical": 0.0,
-            "forehead_size": 0.0,
-            "temple_size": 0.0,
-            "aged_male": 0.0,
-            "aged_young": 0.0,
-            "Male": Male,
-            "LIVE_KEY_PERMANENT": 1.0,
-            "LIVE_KEY_TEMP_": 0.0,
-        },
-        "skin": {
-            "tone": universal_params.RandomUniformDiscrete(0.1, 1.9, 51), # From Anyhuman1
-            "redness": universal_params.RandomUniformDiscrete(-0.2, 0.8, 51), # From Anyhuman1
-            "saturation":universal_params.RandomUniformDiscrete(0.1, 0.9, 51), # From Anyhuman1
-            "normal_strength": rnd.randint(1, 2), # From Anyhuman1
-            "roughness_multiplier": universal_params.RandomUniformDiscrete(1.5, 2.0, 51), # From Anyhuman1
-            "freckles": universal_params.RandomUniformDiscrete(0.0, 0.5, 101), # From Anyhuman1
-            "splotches": universal_params.RandomUniformDiscrete(0.0, 0.5, 101), # From Anyhuman1
-            "texture.set": sSkinTexture,
-            "cavity_strength": 0.0,
-            "gender_specific": {"mustache_shadow": 0.0, "beard_shadow": 0.0},
-        },
-        "eyes": {
-            "pupil_color": [rnd.random(), rnd.random(), rnd.random(), 1.00],
-            "sclera_color": [rnd.random(), rnd.random(), rnd.random(), 1.00],
-        },
-        "height": {"set": height},
-        "hair": {
-            "eyebrows": {
-                "set": sEyebrows,
-                "lightness": 0.10000000149011612,
-                "redness": 0.8999999761581421,
-                "roughness": 0.44999998807907104,
-                "salt_and_pepper": 0.0,
-                "roots": 0.0,
-                "root_lightness": 0.5,
-                "root_redness": 0.0,
-                "roots_hue": 0.5,
-                "fast_or_accurate": 1.0,  # 1.0: Accurate
-                "hue": 0.5,
-            },
-            "regular_hair": {
-                "set": sRegularHair,
-                "lightness": universal_params.RandomUniformDiscrete(0.1, 3.9, 39), # From Anyhuman1
-                "redness": universal_params.RandomUniformDiscrete(0.1, 0.9, 9), # From Anyhuman1
-                "roughness": universal_params.RandomUniformDiscrete(0.1, 0.9, 9), # From Anyhuman1
-                "salt_and_pepper": universal_params.RandomUniformDiscrete(0.1, 0.9, 9), # From Anyhuman1
-                "roots": universal_params.RandomUniformDiscrete(0.1, 0.9, 9), # From Anyhuman1
-                "root_lightness": universal_params.RandomUniformDiscrete(0.1, 0.9, 9),
-                "root_redness": universal_params.RandomUniformDiscrete(0.1, 0.9, 9),
-                "roots_hue": universal_params.RandomUniformDiscrete(0.1, 0.9, 9),
-                "fast_or_accurate": 1.0, # 1.0: Accurate
-                "hue": 0.5
-            },
-            "face_hair": dFaceHair,
-        },
-        "clothing": {"outfit": {"set": outfit}, "footwear": {"set": sFootwear}},
-    }
+    NewHumGenV4Config = dPreset
+    # Skin
+    NewHumGenV4Config["skin"]["tone"] =  rnd.uniform(0, 1.0)
+    NewHumGenV4Config["skin"]["redness"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["skin"]["saturation"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["skin"]["normal_strength"] = rnd.randint(1, 2)
+    NewHumGenV4Config["skin"]["roughness_multiplier"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["skin"]["freckles"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["skin"]["splotches"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["skin"]["texture.set"] = sSkinTexture
+    NewHumGenV4Config["skin"]["cavity_strength"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["skin"]["gender_specific"]["mustache_shadow"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["skin"]["gender_specific"]["beard_shadow"] =  rnd.uniform(0, 1.0)
+    # Eyes
+    NewHumGenV4Config["eyes"]["pupil_color"] = [rnd.uniform(0, 1.0), rnd.uniform(0, 1.0), rnd.uniform(0, 1.0), 1.00]
+    NewHumGenV4Config["eyes"]["sclera"] = [rnd.uniform(0, 1.0), rnd.uniform(0, 1.0), rnd.uniform(0, 1.0), 1.00]
+    # Height
+    NewHumGenV4Config["height"]["set"] = height
+    NewHumGenV4Config["keys"]["height_150"] = height_150
+    NewHumGenV4Config["keys"]["height_200"] = height_200
+    # Randomize Eye brows
+    NewHumGenV4Config["hair"]["eyebrows"]["set"] = sEyebrows
+    NewHumGenV4Config["hair"]["eyebrows"]["lightness"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["hair"]["eyebrows"]["redness"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["hair"]["eyebrows"]["roughness"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["hair"]["eyebrows"]["salt_and_pepper"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["hair"]["eyebrows"]["roots"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["hair"]["eyebrows"]["root_lightness"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["hair"]["eyebrows"]["root_redness"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["hair"]["eyebrows"]["roots_hue"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["hair"]["eyebrows"]["fast_or_accurate"] = 1
+    NewHumGenV4Config["hair"]["eyebrows"]["hue"] = rnd.uniform(0, 1.0)
+    # Randomize Regular Hair
+    NewHumGenV4Config["hair"]["regular_hair"]["set"] = sRegularHair
+    NewHumGenV4Config["hair"]["regular_hair"]["lightness"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["hair"]["regular_hair"]["redness"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["hair"]["regular_hair"]["roughness"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["hair"]["regular_hair"]["salt_and_pepper"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["hair"]["regular_hair"]["roots"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["hair"]["regular_hair"]["root_lightness"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["hair"]["regular_hair"]["root_redness"]= rnd.uniform(0, 1.0)
+    NewHumGenV4Config["hair"]["regular_hair"]["roots_hue"] = rnd.uniform(0, 1.0)
+    NewHumGenV4Config["hair"]["regular_hair"]["fast_or_accurate"] = 1.0
+    NewHumGenV4Config["hair"]["regular_hair"]["hue"] = rnd.uniform(0, 1.0)
+    # Face hair
+    NewHumGenV4Config["hair"]["face_hair"] = dFaceHair
+    # Clothing
+    NewHumGenV4Config["clothing"]["outfit"]["set"] = outfit
+    # Foot wear
+    NewHumGenV4Config["clothing"]["footwear"]["set"] = sFootwear
 
+    
     dictAnyHuman = {"dictCustom":
-            {
+             {
                 "sGender": sGender,
                 "sArmatureName" : sArmatureName,
                 "bOpenPoseHandLabels": False,
-                "bFacialRig": True ,
+                "sOpenposeHandLabelFile": params['mParamConfig'].get('sOpenposeHandLabelFile', None),
+                "bFacialRig": True,
+                "sWFLWLableFile": params['mParamConfig'].get('sWFLWLableFile', None),
+                "sIMSLabels": params['mParamConfig'].get('sIMSLabels', None),
+                "sEyebrowLabelsPath": params['mParamConfig'].get('sEyebrowLabelsPath', None),
                 "sPoseFilename": None,
                 "dBeardLength" : dBeardLength,
             },
