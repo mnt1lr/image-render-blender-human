@@ -215,7 +215,7 @@ def FullyRandomizeParams(params, generator_config, rnd):
                 "root_lightness": rnd.uniform(0, 1.0),
                 "root_redness": rnd.uniform(0, 1.0),
                 "roots_hue": rnd.uniform(0, 1.0),
-                "fast_or_accurate": rnd.uniform(0, 1.0),
+                "fast_or_accurate": 1.0,
                 "hue": rnd.uniform(0, 1.0)
             },
             "regular_hair": {
