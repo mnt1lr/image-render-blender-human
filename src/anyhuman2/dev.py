@@ -116,13 +116,7 @@ def _testHumanGeneration():
                     "sId": "Armature.002",
                     "sMode": "RANDOM_FULL",
                     "mParamConfig": {
-                        "sGender": "male",
-                        "bOpenPoseHandLabels": True,
-                        "sOpenposeHandLabelFile": "labelling//mapping//openpose_hand_humgen.json",
-                        "bFacialRig": True,
-                        "sWFLWLableFile": "labelling//mapping//WFLW_labels_anyhuman.json",
-                        "sIMSLabels": "labelling//mapping//IMS_bones.json",
-                        "sEyebrowLabelsPath": "labelling//mapping//eyebrows//"
+                        "sGender": "male"
                     },
                 }
             )

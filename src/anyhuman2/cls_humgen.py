@@ -369,32 +369,40 @@ class HumGenWrapper:
                     print(f"ERROR: {e}")
                     return
 
-                if "sOpenposeHandLabelFile" in dictCustom:
+                if dictCustom["sOpenposeHandLabelFile"] is not None:
                     sHandLabelFile = dictCustom["sOpenposeHandLabelFile"]
                     objRig = self.human_obj.objects.rig
                     objArmature = objRig.data
                     sJsonFile = self.GetAbsPath(_sFile=sHandLabelFile)
                     self.xBoneLabel.AddHandLabels(_sLabelFile=sJsonFile, _objArmature=objArmature, _objRig=objRig)
+                else:
+                    print("INFO: OpenposeHandLabelFile is not defined")
                 # endif
 
-                if "sWFLWLableFile" in dictCustom:
+                if  dictCustom["sWFLWLableFile"] is not None:
                     sWFLWLableFile = dictCustom["sWFLWLableFile"]
                     sJsonFile = self.GetAbsPath(_sFile=sWFLWLableFile)
                     self.xBoneLabel.ImportSkeletonData(_sSkeletonDataFile=sJsonFile, _replaceVertexGroups=True)
+                else:
+                    print("INFO: WFLWLableFile is not defined")
                 # endif
 
-                if "sIMSLabels" in dictCustom:
+                if dictCustom["sIMSLabels"] is not None:
                     sIMSLabelFile = dictCustom["sIMSLabels"]
                     sJsonFile = self.GetAbsPath(_sFile=sIMSLabelFile)
                     self.xBoneLabel.ImportSkeletonData(_sSkeletonDataFile=sJsonFile, _replaceVertexGroups=False)
+                else:
+                    print("INFO: IMS Labels is not defined")
                 # endif
 
                 # NOTE: Keep eyebrows labels in end
-                if "sEyebrowLabelsPath" in dictCustom:
+                if dictCustom["sEyebrowLabelsPath"] is not None:
                     sEyebrowStyle = self.dictHumGenV4["hair"]["eyebrows"]["set"]
                     sLabelFile = dictCustom["sEyebrowLabelsPath"] + sEyebrowStyle + ".json"
                     sEyebrowLabelsFile = self.GetAbsPath(_sFile=sLabelFile)
                     self.xBoneLabel.UpdateEyebrowLabels(_sEyebrowStyle=sEyebrowStyle, _labelFile=sEyebrowLabelsFile)
+                else:
+                    print("INFO: Eyebrow labels not defined")
 
             # case: only humgen dictionary
             else:
