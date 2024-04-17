@@ -31,7 +31,6 @@ import mathutils
 import math
 
 
-import warnings
 import random
 
 from typing import Optional
@@ -54,15 +53,13 @@ except Exception as xEx:
 # # endtry
 
 
-
-    
-##############################################################################################################
+###############################################################################
 def GenerateHuman(_dicParams, **kwargs):
     """
     Function for generating any human.
 
-    It uses the HumGenWrapper class for first computation of a set of parameters that
-    then will be used to create the human.
+    It uses the HumGenWrapper class for first computation of a set of 
+    parameters that then will be used to create the human.
 
     The computation of parameters can be based on different approaches as full randomization,
     randomization by a Zwicky-Box specification, or directly by given parameters. For a detailed description,
@@ -112,7 +109,7 @@ def GenerateHuman(_dicParams, **kwargs):
 
     # first compute the parameters that should be used for the creation of the human
     generated_params:dict = ComputeParams(mode, _dicParams, overwrite, xHumanGenerator.generator_config, rnd)
-    # Save to json File if bSavein in mParamConfig is True
+    # Save to json File if bSave in mParamConfig is True
     SaveGeneratedParams(_dicParams, generated_params)
         
     # apply

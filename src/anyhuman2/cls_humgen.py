@@ -42,6 +42,7 @@ from pathlib import Path
 from anyblend import node
 from anyblend.util.node import GetByLabelOrId
 from anyblend.collection import RemoveCollection
+from anybase import convert
 import addon_utils
 
 from .labelling.cls_label_skeleton import BoneLabel
@@ -258,7 +259,6 @@ class HumGenWrapper:
         """
         # Armature name
 
-        # ToDo: try except keyerror implementieren
         # Reading values from dict and splitting it to custom and HumGenV4 dicts
         # case: anyhuman dictionary (= custom dict + humgen dict
 
@@ -266,8 +266,10 @@ class HumGenWrapper:
             if "dictCustom" in generatedParams.keys():
                 dictCustom: dict = generatedParams["dictCustom"]
                 self.dictHumGenV4: dict = generatedParams["dictHumGen_V4"]
-                sGender: str = dictCustom["sGender"]
-                sName: str = dictCustom["sArmatureName"]
+                # sGender: str = dictCustom["sGender"]
+                sGender: str = convert.DictElementToString(dictCustom, "sGender", bDoRaise=True)
+                # sName: str = dictCustom["sArmatureName"]
+                sName: str = convert.DictElementToString(dictCustom, "sArmatureName", bDoRaise=True)
                 self.dBeardLength: dict = dictCustom["dBeardLength"]
                 # Get preset for selected gender
                 self.chosen_option = self.Human.get_preset_options(sGender)
@@ -292,40 +294,57 @@ class HumGenWrapper:
                 # Set facial rig
                 if dictCustom["bFacialRig"] == True:
                     self.human_obj.expression.load_facial_rig()
-                else:
-                    pass
                 # endif
                 # initialize xBoneLabel class
                 try:
                     self.xBoneLabel = BoneLabel(_human=self.human_obj)
                 except AttributeError as e:
-                    print("Human not generated successfully")
+                    # TODO: raise error instead of print
+                    print("Human not generated successfully") 
                     print(f"ERROR: {e}")
                     return
 
+                # TODO if sHandLabelFile == "DefaultHandLabel":...
                 if dictCustom["sOpenposeHandLabelFile"] is not None:
-                    sHandLabelFile = dictCustom["sOpenposeHandLabelFile"]
-                    objRig = self.human_obj.objects.rig
-                    objArmature = objRig.data
-                    sJsonFile = self.GetAbsPath(_sFile=sHandLabelFile)
-                    self.xBoneLabel.AddHandLabels(_sLabelFile=sJsonFile, _objArmature=objArmature, _objRig=objRig)
+                    # sHandLabelFile = dictCustom["sOpenposeHandLabelFile"]
+                    sHandLabelFile: str = convert.DictElementToString(dictCustom, "sOpenposeHandLabelFile", bDoRaise=False)
+                    if sHandLabelFile == "OpenPoseHandLabel":
+                        # TODO: If sHandLabelFile is "DefaultHandLabel" the respective label file from the folder should be loaded
+                        pass
+                    else:
+                        objRig = self.human_obj.objects.rig
+                        objArmature = objRig.data
+                        sJsonFile = self.GetAbsPath(_sFile=sHandLabelFile)
+                        self.xBoneLabel.AddHandLabels(_sLabelFile=sJsonFile, _objArmature=objArmature, _objRig=objRig)
                 else:
                     print("INFO: OpenposeHandLabelFile is not defined")
                 # endif
 
-                if  dictCustom["sWFLWLableFile"] is not None:
-                    sWFLWLableFile = dictCustom["sWFLWLableFile"]
-                    sJsonFile = self.GetAbsPath(_sFile=sWFLWLableFile)
-                    self.xBoneLabel.ImportSkeletonData(_sSkeletonDataFile=sJsonFile, _replaceVertexGroups=True)
+                if dictCustom["sWFLWLableFile"] is not None:
+                    # sWFLWLableFile = dictCustom["sWFLWLableFile"]
+                    sWFLWLableFile: str = convert.DictElementToString(dictCustom, "sWFLWLableFile", bDoRaise=False)
+                    if sWFLWLableFile == "WFLWLabel":
+                        # TODO: If sWFLWLableFile is "WFLWLabel" the respective label file from the folder should be loaded
+                        pass
+                    else:
+                        sJsonFile = self.GetAbsPath(_sFile=sWFLWLableFile)
+                        self.xBoneLabel.ImportSkeletonData(_sSkeletonDataFile=sJsonFile, _replaceVertexGroups=True)
                 else:
+                    # TODO: raise exception no print
                     print("INFO: WFLWLableFile is not defined")
                 # endif
 
                 if dictCustom["sIMSLabels"] is not None:
-                    sIMSLabelFile = dictCustom["sIMSLabels"]
-                    sJsonFile = self.GetAbsPath(_sFile=sIMSLabelFile)
-                    self.xBoneLabel.ImportSkeletonData(_sSkeletonDataFile=sJsonFile, _replaceVertexGroups=False)
+                    # sIMSLabelFile = dictCustom["sIMSLabels"]
+                    sIMSLabelFile: str = convert.DictElementToString(dictCustom, "sIMSLabelFile", bDoRaise=False)
+                    if sIMSLabelFile == "IMSLabel":
+                        # TODO: If sIMSLabelFile is "IMSLabel" the respective label file from the folder should be loaded
+                        pass
+                    else:
+                        sJsonFile = self.GetAbsPath(_sFile=sIMSLabelFile)
+                        self.xBoneLabel.ImportSkeletonData(_sSkeletonDataFile=sJsonFile, _replaceVertexGroups=False)
                 else:
+                    # TODO: raise exception no print
                     print("INFO: IMS Labels is not defined")
                 # endif
 
@@ -336,6 +355,7 @@ class HumGenWrapper:
                     sEyebrowLabelsFile = self.GetAbsPath(_sFile=sLabelFile)
                     self.xBoneLabel.UpdateEyebrowLabels(_sEyebrowStyle=sEyebrowStyle, _labelFile=sEyebrowLabelsFile)
                 else:
+                    # TODO: raise exception no print
                     print("INFO: Eyebrow labels not defined")
 
             # case: only humgen dictionary
