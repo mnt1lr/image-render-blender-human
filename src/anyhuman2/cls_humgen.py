@@ -336,7 +336,7 @@ class HumGenWrapper:
 
                 if dictCustom["sIMSLabels"] is not None:
                     # sIMSLabelFile = dictCustom["sIMSLabels"]
-                    sIMSLabelFile: str = convert.DictElementToString(dictCustom, "sIMSLabelFile", bDoRaise=False)
+                    sIMSLabelFile: str = convert.DictElementToString(dictCustom, "sIMSLabels", bDoRaise=False)
                     if sIMSLabelFile == "IMSLabel":
                         # TODO: If sIMSLabelFile is "IMSLabel" the respective label file from the folder should be loaded
                         pass
