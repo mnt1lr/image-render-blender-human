@@ -39,18 +39,20 @@ except Exception:
 
 if bInBlenderContext is True:
     try:
-        bl_info = { # needs to be removed 
+        bl_info = {  # needs to be removed
             "name": "Generate a random Human",
             "blender": (2, 93, 0),
             "category": "Object",
         }
 
-        from . import cls_gen_random_human
+        # from . import cls_gen_random_human
         # ## DEBUG ##
         import anybase.module
 
         # anybase.module.ReloadModule(_sName="anyblend", _bChildren=True, _bDoPrint=True) # Reload module anyblend
-        anybase.module.ReloadCurrentChildModules(_bDoPrint=True) # Reload all child modules of the calling function's module
+        anybase.module.ReloadCurrentChildModules(
+            _bDoPrint=True
+        )  # Reload all child modules of the calling function's module
         # ###########
     except Exception as xEx:
         # pass
@@ -60,15 +62,17 @@ if bInBlenderContext is True:
 
 
 def register():
-    from . import cls_gen_random_human
-    cls_gen_random_human.register()
+    pass
+    # from . import cls_gen_random_human
+    # cls_gen_random_human.register()
 
 
 # enddef
 
 
 def unregister():
-    cls_gen_random_human.unregister()
+    pass
+    # cls_gen_random_human.unregister()
 
 
 # enddef
