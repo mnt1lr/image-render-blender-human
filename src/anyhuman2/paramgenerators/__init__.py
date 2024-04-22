@@ -35,6 +35,7 @@ from . import random_realistic
 import os
 import json
 import datetime
+from pathlib import Path
 # from . import zwicky
 
 
@@ -130,18 +131,19 @@ def SaveGeneratedParams(params: dict, generated_params: dict):
     """
     try:
         saveJSON: dict = params["mParamConfig"].get("bSave", False)
-        filepath: dict = params["mParamConfig"].get("sFilePathJSON", {"sFilePathJSON": os.path.dirname(os.path.abspath(__file__))})
+        filepath: dict = params["mParamConfig"].get("sFilePathJSON", {"sFilePathJSON": Path(__file__).resolve().parent})
         current_datetime: str = datetime.datetime.now()
         filename = current_datetime.strftime("%Y-%m-%d_%H-%M-%S")
-        filepath_new = os.path.join(filepath, "human_" + str(filename) + ".json")
-        filepath_new = filepath_new.replace(os.sep, '/')
+        filepath_new = Path(filepath + "/" + f"human_{filename}.json")
+        # filepath_new = filepath_new.as_posix()
         if saveJSON is True:
-            while os.path.exists(filepath_new) is True:
-                file = f"{os.path.splitext(os.path.basename(filepath_new))[0]}_{counter:04d}.json"
+            counter = 0
+            while filepath_new.exists():
+                file = f"{filepath_new.stem}_{counter:04d}.json"
                 with open(file, "w") as json_file:
                     json.dump(generated_params, file)
                 counter += 1
-            if os.path.exists(filepath_new) is False:
+            if not filepath_new.exists():
                 with open(filepath_new, "w") as json_file:
                     json.dump(generated_params, json_file)
         else:
