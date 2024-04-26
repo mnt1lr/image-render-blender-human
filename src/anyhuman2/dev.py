@@ -39,8 +39,8 @@ def _testHumanGeneration():
         # "ZWICKY",
         # "ZWICKY_GRID",
         # "RANDOM_FULL_GRID",
-        "RANDOM_FULL",
-        #  "RANDOM_REALISTIC",
+        # "RANDOM_FULL",
+         "RANDOM_REALISTIC",
         # "RANDOM_REALISTIC_GRID",
         # "PERSONA",
         # "LEGACY",
@@ -103,9 +103,8 @@ def _testHumanGeneration():
                         "bOpenPoseHandLabels": True,
                         "sOpenposeHandLabelFile": "OpenPoseHandLabel",
                         "bFacialRig": True,
-                        "sWFLWLableFile": "labelling//mapping//WFLW_labels_anyhuman.json",
-                        "sIMSLabels": "labelling//mapping//IMS_bones.json",
-                        "sEyebrowLabelsPath": "labelling//mapping//eyebrows//",
+                        "sWFLWLableFile": "WFLWLabel",
+                        "sIMSLabels": "labelling//mapping//IMS_bones.json"
                     },
                 }
             )
@@ -135,7 +134,12 @@ def _testHumanGeneration():
                 {
                     "sId": "Armature.001",
                     "sMode": "RANDOM_REALISTIC",
-                    "mParamConfig": {"sGender": "male"},
+                    "mParamConfig": {
+                        "sGender": "male",
+                        "bFacialRig": True,
+                        "sWFLWLableFile": "labelling//mapping//WFLW_labels_anyhuman.json",
+                        "sIMSLabels": "labelling//mapping//IMS_bones.json"
+                    },
                 }
             )
             bpy.context.scene.cursor.location[0] += dx
