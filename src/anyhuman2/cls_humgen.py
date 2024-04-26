@@ -244,13 +244,16 @@ class HumGenWrapper:
     # enddef
 
     def GetAbsPath(self, _sFile: str):
-        sCurrentDirectory = os.path.dirname(os.path.abspath(__file__))
-        print(f"Incoming file: {Path(_sFile)}")
-        print(f"Current directory: {sCurrentDirectory}")
-        absPath = os.path.join(sCurrentDirectory, _sFile)
-        print(f"Absolute path: {absPath}")
-        return absPath
-
+        try:
+            sCurrentDirectory = Path(__file__).parent
+            sFilePath = sCurrentDirectory / _sFile
+            if sFilePath.exists():
+                return str(sFilePath)
+            else:
+                return None
+        except Exception as e:
+            raise Exception(f"An error occurred finding for file {sFilePath} : {e}")
+            return None
     # enddef
 
     def CreateHuman(self, generatedParams: dict):
@@ -305,9 +308,7 @@ class HumGenWrapper:
                 try:
                     self.xBoneLabel = BoneLabel(_human=self.human_obj)
                 except AttributeError as e:
-                    # TODO: raise error instead of print
-                    print("Human not generated successfully") 
-                    print(f"ERROR: {e}")
+                    raise AttributeError("Human not generated successfully, ERROR: {e}")
                     return
 
                 if dictCustom["sOpenposeHandLabelFile"] is not None:
@@ -320,7 +321,7 @@ class HumGenWrapper:
                         objRig = self.human_obj.objects.rig
                         objArmature = objRig.data
                         sJsonFile = self.GetAbsPath(_sFile=self.sFilePathImport)
-                        self.xBoneLabel.AddHandLabels(_sLabelFile=sJsonFile, _objArmature=objArmature, _objRig=objRig)    
+                        self.xBoneLabel.AddHandLabels(_sLabelFile=sJsonFile, _objArmature=objArmature, _objRig=objRig)
                     else:
                         objRig = self.human_obj.objects.rig
                         objArmature = objRig.data
@@ -335,14 +336,15 @@ class HumGenWrapper:
                     # sWFLWLableFile = dictCustom["sWFLWLableFile"]
                     sWFLWLableFile: str = convert.DictElementToString(dictCustom, "sWFLWLableFile", bDoRaise=False)
                     if sWFLWLableFile == "WFLWLabel":
-                        # TODO: If sWFLWLableFile is "WFLWLabel" the respective label file from the folder should be loaded
+                        DefaultWflwLabelFile = res.files('anyhuman2').joinpath("labelling", "mapping", "WFLW_labels_anyhuman.json")
+                        with res.as_file(DefaultWflwLabelFile) as pathData:
+                            self.sFilePathImport = pathData.as_posix()
+                        sJsonFile = self.GetAbsPath(_sFile=self.sFilePathImport)
+                        self.xBoneLabel.ImportSkeletonData(_sSkeletonDataFile=sJsonFile, _replaceVertexGroups=True)
                         pass
                     else:
                         sJsonFile = self.GetAbsPath(_sFile=sWFLWLableFile)
                         self.xBoneLabel.ImportSkeletonData(_sSkeletonDataFile=sJsonFile, _replaceVertexGroups=True)
-                else:
-                    # TODO: raise exception no print
-                    print("INFO: WFLWLableFile is not defined")
                 # endif
 
                 if dictCustom["sIMSLabels"] is not None:
@@ -354,20 +356,19 @@ class HumGenWrapper:
                     else:
                         sJsonFile = self.GetAbsPath(_sFile=sIMSLabelFile)
                         self.xBoneLabel.ImportSkeletonData(_sSkeletonDataFile=sJsonFile, _replaceVertexGroups=False)
-                else:
-                    # TODO: raise exception no print
-                    print("INFO: IMS Labels is not defined")
                 # endif
 
                 # NOTE: Keep eyebrows labels in end
-                if dictCustom["sEyebrowLabelsPath"] is not None:
-                    sEyebrowStyle = self.dictHumGenV4["hair"]["eyebrows"]["set"]
-                    sLabelFile = dictCustom["sEyebrowLabelsPath"] + sEyebrowStyle + ".json"
-                    sEyebrowLabelsFile = self.GetAbsPath(_sFile=sLabelFile)
-                    self.xBoneLabel.UpdateEyebrowLabels(_sEyebrowStyle=sEyebrowStyle, _labelFile=sEyebrowLabelsFile)
-                else:
-                    # TODO: raise exception no print
-                    print("INFO: Eyebrow labels not defined")
+                if dictCustom["sEyebrowStyle"] is not None:
+                    try:
+                        sEyebrowStyle = self.dictHumGenV4["hair"]["eyebrows"]["set"]
+                        sEyebrowStyleFile = sEyebrowStyle + ".json"
+                        sLabelFile = res.files('anyhuman2').joinpath("labelling", "mapping", "eyebrows", sEyebrowStyleFile)
+                        sEyebrowLabelsFile = self.GetAbsPath(_sFile=sLabelFile)
+                        self.xBoneLabel.UpdateEyebrowLabels(_sEyebrowStyle=sEyebrowStyle, _labelFile=sEyebrowLabelsFile)
+                    except Exception as e:
+                        raise Exception(f"Eyebrow style could not be fetched, Error: {e}")
+
 
             # case: only humgen dictionary
             else:

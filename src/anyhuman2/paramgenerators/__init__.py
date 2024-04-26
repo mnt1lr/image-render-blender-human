@@ -134,7 +134,7 @@ def SaveGeneratedParams(params: dict, generated_params: dict):
         filepath: dict = params["mParamConfig"].get("sFilePathJSON", {"sFilePathJSON": Path(__file__).resolve().parent})
         current_datetime: str = datetime.datetime.now()
         filename = current_datetime.strftime("%Y-%m-%d_%H-%M-%S")
-        filepath_new = Path(filepath + "/" + f"human_{filename}.json")
+        filepath_new = Path(str(filepath) + "/" + f"human_{filename}.json")
         # filepath_new = filepath_new.as_posix()
         if saveJSON is True:
             counter = 0
