@@ -12,7 +12,6 @@ RuntimeError
 """
 
 
-import os
 import json
 from mathutils import Vector
 import bpy
