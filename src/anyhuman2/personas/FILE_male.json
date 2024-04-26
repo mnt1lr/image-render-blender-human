@@ -7,7 +7,8 @@
         "bFacialRig": true,
         "sWFLWLableFile": "labelling//mapping//WFLW_labels_anyhuman.json",
         "sIMSLabels":"labelling//mapping//IMS_bones.json",
-        "sEyebrowLabelsPath":"labelling//mapping//eyebrows//",
+        "sEyebrowLabelsPath":"labelling//mapping//eyebrows//", //NOT NEEDED ANYMORE
+        "sEyebrowStyle":"Eyebrows_007",
         "sPoseFilename": {
             "set": null
         },

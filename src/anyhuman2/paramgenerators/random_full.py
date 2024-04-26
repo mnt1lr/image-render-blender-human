@@ -27,7 +27,7 @@
 # -----
 ###
 
-from .GeneralRandomParameters import GeneralRandomParameters 
+from .GeneralRandomParameters import GeneralRandomParameters
 
 ############################################################################################
 def FullyRandomizeParams(params, generator_config, rnd):
@@ -48,7 +48,7 @@ def FullyRandomizeParams(params, generator_config, rnd):
     params : dict
         set of parameter controlling the randomization
     generator_config : dict
-        dictionary containing parameters (clothing, beard styles, hair styles,...) obtained from HumgenV4     
+        dictionary containing parameters (clothing, beard styles, hair styles,...) obtained from HumgenV4
     rnd : instance
         for random number generation
     Returns
@@ -248,13 +248,14 @@ def FullyRandomizeParams(params, generator_config, rnd):
                 "sGender": sGender,
                 "sArmatureName" : sArmatureName,
                 "bOpenPoseHandLabels": False,
-                "sOpenposeHandLabelFile": params['mParamConfig'].get('sOpenposeHandLabelFile', None),
+                "sOpenposeHandLabelFile": params['mParamConfig'].get('sOpenposeHandLabelFile', 'OpenPoseHandLabel'),
                 "bFacialRig": True,
-                "sWFLWLableFile": params['mParamConfig'].get('sWFLWLableFile', None),
-                "sIMSLabels": params['mParamConfig'].get('sIMSLabels', None),
-                "sEyebrowLabelsPath": params['mParamConfig'].get('sEyebrowLabelsPath', None),
+                "sWFLWLableFile": params['mParamConfig'].get('sWFLWLableFile', 'WFLWLabel'),
+                "sIMSLabels": params['mParamConfig'].get('sIMSLabels', 'IMSLabel'),
+                # "sEyebrowLabelsPath": params['mParamConfig'].get('sEyebrowLabelsPath', None),
+                "sEyebrowStyle": sEyebrows,
                 "sPoseFilename": None,
-                "dBeardLength" : dBeardLength,
+                "dBeardLength": dBeardLength,
             },
         "dictHumGen_V4": NewHumGenV4Config
     }

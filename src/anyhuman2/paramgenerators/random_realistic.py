@@ -59,7 +59,7 @@ def RealisticRandomizeParams(params, generator_config, rnd):
         Dictionary of parameters for human generator
     """
 
-    
+
     universal_params = GeneralRandomParameters(params, generator_config, rnd)
     dPreset = universal_params.GetPreset()
     sArmatureName = universal_params.ArmatureName()
@@ -207,17 +207,18 @@ def RealisticRandomizeParams(params, generator_config, rnd):
     # Foot wear
     NewHumGenV4Config["clothing"]["footwear"]["set"] = sFootwear
 
-    
+
     dictAnyHuman = {"dictCustom":
              {
                 "sGender": sGender,
                 "sArmatureName" : sArmatureName,
                 "bOpenPoseHandLabels": False,
-                "sOpenposeHandLabelFile": params['mParamConfig'].get('sOpenposeHandLabelFile', None),
+                "sOpenposeHandLabelFile": params['mParamConfig'].get('sOpenposeHandLabelFile', 'OpenPoseHandLabel'),
                 "bFacialRig": True,
-                "sWFLWLableFile": params['mParamConfig'].get('sWFLWLableFile', None),
-                "sIMSLabels": params['mParamConfig'].get('sIMSLabels', None),
-                "sEyebrowLabelsPath": params['mParamConfig'].get('sEyebrowLabelsPath', None),
+                "sWFLWLableFile": params['mParamConfig'].get('sWFLWLableFile', 'WFLWLabel'),
+                "sIMSLabels": params['mParamConfig'].get('sIMSLabels', 'IMSLabel'),
+                # "sEyebrowLabelsPath": params['mParamConfig'].get('sEyebrowLabelsPath', None),
+                "sEyebrowStyle": sEyebrows,
                 "sPoseFilename": None,
                 "dBeardLength" : dBeardLength,
             },
