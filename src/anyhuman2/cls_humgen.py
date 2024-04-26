@@ -310,7 +310,6 @@ class HumGenWrapper:
                     print(f"ERROR: {e}")
                     return
 
-                # TODO if sHandLabelFile == "DefaultHandLabel":...
                 if dictCustom["sOpenposeHandLabelFile"] is not None:
                     # sHandLabelFile = dictCustom["sOpenposeHandLabelFile"]
                     sHandLabelFile: str = convert.DictElementToString(dictCustom, "sOpenposeHandLabelFile", bDoRaise=False)
