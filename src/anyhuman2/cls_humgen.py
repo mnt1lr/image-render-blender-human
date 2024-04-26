@@ -38,6 +38,12 @@ import collections
 import json
 
 from pathlib import Path
+import sys
+
+if sys.version_info < (3, 10):
+    import importlib_resources as res
+else:
+    from importlib import resources as res
 
 from anyblend import node
 from anyblend.util.node import GetByLabelOrId
@@ -309,13 +315,19 @@ class HumGenWrapper:
                     # sHandLabelFile = dictCustom["sOpenposeHandLabelFile"]
                     sHandLabelFile: str = convert.DictElementToString(dictCustom, "sOpenposeHandLabelFile", bDoRaise=False)
                     if sHandLabelFile == "OpenPoseHandLabel":
-                        # TODO: If sHandLabelFile is "DefaultHandLabel" the respective label file from the folder should be loaded
-                        pass
+                        DefaultOpenPoseHandLabel = res.files('anyhuman2').joinpath("labelling", "mapping", "openpose_hand_anyhuman.json")
+                        with res.as_file(DefaultOpenPoseHandLabel) as pathData:
+                            self.sFilePathImport = pathData.as_posix()
+                        objRig = self.human_obj.objects.rig
+                        objArmature = objRig.data
+                        sJsonFile = self.GetAbsPath(_sFile=self.sFilePathImport)
+                        self.xBoneLabel.AddHandLabels(_sLabelFile=sJsonFile, _objArmature=objArmature, _objRig=objRig)    
                     else:
                         objRig = self.human_obj.objects.rig
                         objArmature = objRig.data
                         sJsonFile = self.GetAbsPath(_sFile=sHandLabelFile)
                         self.xBoneLabel.AddHandLabels(_sLabelFile=sJsonFile, _objArmature=objArmature, _objRig=objRig)
+                    # endif
                 else:
                     print("INFO: OpenposeHandLabelFile is not defined")
                 # endif
