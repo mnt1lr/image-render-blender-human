@@ -254,6 +254,7 @@ class HumGenWrapper:
         except Exception as e:
             raise Exception(f"An error occurred finding for file {sFilePath} : {e}")
             return None
+
     # enddef
 
     def CreateHuman(self, generatedParams: dict):
@@ -291,7 +292,9 @@ class HumGenWrapper:
                             # obtain the particle system which is connected to the hair system
                             particle_system = self.human_obj.hair.particle_systems[key].settings.name
                             # Set the length of the respective particle system to the value in the dict
-                            bpy.data.particles[particle_system].child_length = self.dBeardLength["hair_systems"][key]["length"]
+                            bpy.data.particles[particle_system].child_length = self.dBeardLength["hair_systems"][key][
+                                "length"
+                            ]
                     except KeyError:
                         raise KeyError(
                             f"The key '{self.dBeardLength}' and '{self.dictHumGenV4['hair']['face_hair']['set']}' is not present in the dictionary."
@@ -313,9 +316,13 @@ class HumGenWrapper:
 
                 if dictCustom["sOpenposeHandLabelFile"] is not None:
                     # sHandLabelFile = dictCustom["sOpenposeHandLabelFile"]
-                    sHandLabelFile: str = convert.DictElementToString(dictCustom, "sOpenposeHandLabelFile", bDoRaise=False)
+                    sHandLabelFile: str = convert.DictElementToString(
+                        dictCustom, "sOpenposeHandLabelFile", bDoRaise=False
+                    )
                     if sHandLabelFile == "OpenPoseHandLabel":
-                        DefaultOpenPoseHandLabel = res.files('anyhuman2').joinpath("labelling", "mapping", "openpose_hand_anyhuman.json")
+                        DefaultOpenPoseHandLabel = res.files("anyhuman2").joinpath(
+                            "labelling", "mapping", "openpose_hand_anyhuman.json"
+                        )
                         with res.as_file(DefaultOpenPoseHandLabel) as pathData:
                             self.sFilePathImport = pathData.as_posix()
                         objRig = self.human_obj.objects.rig
@@ -336,7 +343,9 @@ class HumGenWrapper:
                     # sWFLWLableFile = dictCustom["sWFLWLableFile"]
                     sWFLWLableFile: str = convert.DictElementToString(dictCustom, "sWFLWLableFile", bDoRaise=False)
                     if sWFLWLableFile == "WFLWLabel":
-                        DefaultWflwLabelFile = res.files('anyhuman2').joinpath("labelling", "mapping", "WFLW_labels_anyhuman.json")
+                        DefaultWflwLabelFile = res.files("anyhuman2").joinpath(
+                            "labelling", "mapping", "WFLW_labels_anyhuman.json"
+                        )
                         with res.as_file(DefaultWflwLabelFile) as pathData:
                             self.sFilePathImport = pathData.as_posix()
                         sJsonFile = self.GetAbsPath(_sFile=self.sFilePathImport)
@@ -363,12 +372,13 @@ class HumGenWrapper:
                     try:
                         sEyebrowStyle = self.dictHumGenV4["hair"]["eyebrows"]["set"]
                         sEyebrowStyleFile = sEyebrowStyle + ".json"
-                        sLabelFile = res.files('anyhuman2').joinpath("labelling", "mapping", "eyebrows", sEyebrowStyleFile)
+                        sLabelFile = res.files("anyhuman2").joinpath(
+                            "labelling", "mapping", "eyebrows", sEyebrowStyleFile
+                        )
                         sEyebrowLabelsFile = self.GetAbsPath(_sFile=sLabelFile)
                         self.xBoneLabel.UpdateEyebrowLabels(_sEyebrowStyle=sEyebrowStyle, _labelFile=sEyebrowLabelsFile)
                     except Exception as e:
                         raise Exception(f"Eyebrow style could not be fetched, Error: {e}")
-
 
             # case: only humgen dictionary
             else:
@@ -383,7 +393,8 @@ class HumGenWrapper:
             # Rename
             if sName is not None:
                 self.human_obj.name = sName
-            return self.human_obj.props["body_obj"]
+            # return self.human_obj.props["body_obj"]
+            return self.human_obj.objects.rig
         except KeyError:
             raise KeyError(f"The key '{dictCustom}' is not present in the dictionary.")
 
