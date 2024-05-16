@@ -276,9 +276,7 @@ class HumGenWrapper:
             if "dictCustom" in generatedParams.keys():
                 dictCustom: dict = generatedParams["dictCustom"]
                 self.dictHumGenV4: dict = generatedParams["dictHumGen_V4"]
-                # sGender: str = dictCustom["sGender"]
                 sGender: str = convert.DictElementToString(dictCustom, "sGender", bDoRaise=True)
-                # sName: str = dictCustom["sArmatureName"]
                 sName: str = convert.DictElementToString(dictCustom, "sArmatureName", bDoRaise=True)
                 self.dBeardLength: dict = dictCustom["dBeardLength"]
                 # Get preset for selected gender
@@ -311,7 +309,7 @@ class HumGenWrapper:
                 try:
                     self.xBoneLabel = BoneLabel(_human=self.human_obj)
                 except AttributeError as e:
-                    raise AttributeError("Human not generated successfully, ERROR: {e}")
+                    raise AttributeError(f"Human not generated successfully, ERROR: {e}")
                     return
 
                 if dictCustom["sOpenposeHandLabelFile"] is not None:
@@ -343,10 +341,10 @@ class HumGenWrapper:
                     # sWFLWLableFile = dictCustom["sWFLWLableFile"]
                     sWFLWLableFile: str = convert.DictElementToString(dictCustom, "sWFLWLableFile", bDoRaise=False)
                     if sWFLWLableFile == "WFLWLabel":
-                        DefaultWflwLabelFile = res.files("anyhuman2").joinpath(
+                        DefaultWFLWLabelFile = res.files("anyhuman2").joinpath(
                             "labelling", "mapping", "WFLW_labels_anyhuman.json"
                         )
-                        with res.as_file(DefaultWflwLabelFile) as pathData:
+                        with res.as_file(DefaultWFLWLabelFile) as pathData:
                             self.sFilePathImport = pathData.as_posix()
                         sJsonFile = self.GetAbsPath(_sFile=self.sFilePathImport)
                         self.xBoneLabel.ImportSkeletonData(_sSkeletonDataFile=sJsonFile, _replaceVertexGroups=True)
