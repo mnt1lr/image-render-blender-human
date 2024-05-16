@@ -29,6 +29,7 @@
 
 from .GeneralRandomParameters import GeneralRandomParameters
 
+
 ############################################################################################
 def FullyRandomizeParams(params, generator_config, rnd):
     """
@@ -56,21 +57,17 @@ def FullyRandomizeParams(params, generator_config, rnd):
     dict
         Dictionary of parameters for human generator
     """
-    universal_params:dict = GeneralRandomParameters(params, generator_config, rnd)
-    sArmatureName:str = universal_params.ArmatureName()
+    universal_params: dict = GeneralRandomParameters(params, generator_config, rnd)
+    sArmatureName: str = universal_params.ArmatureName()
     Male, dFaceHair, dBeardLength, sRegularHair, sEyebrows = universal_params.RandomizeHair()
-    sGender:str = universal_params.GetGender()
+    sGender: str = universal_params.GetGender()
     height_150, height_200, height = universal_params.RandomizeHeight()
-    outfit:str = universal_params.RandomizeOutfit()
-    sFootwear:str = universal_params.RandomFootwear()
-    sSkinTexture:str = universal_params.RandomizeSkin()
+    outfit: str = universal_params.RandomizeOutfit()
+    sFootwear: str = universal_params.RandomFootwear()
+    sSkinTexture: str = universal_params.RandomizeSkin()
     # HumGenV4 Config
     NewHumGenV4Config = {
-        "age": {
-            "set": rnd.randrange(20, 81),
-            "age_color": 0.0,
-            "age_wrinkles": rnd.uniform(0, 8.0)
-            },
+        "age": {"set": rnd.randrange(20, 81), "age_color": 0.0, "age_wrinkles": rnd.uniform(0, 8.0)},
         "keys": {
             "Forearm Length": rnd.uniform(0, 1.0),
             "Forearm Thickness": rnd.uniform(0, 1.0),
@@ -180,30 +177,25 @@ def FullyRandomizeParams(params, generator_config, rnd):
             "aged_young": rnd.uniform(0, 1.5),
             "Male": Male,
             "LIVE_KEY_PERMANENT": 1.0,
-            "LIVE_KEY_TEMP_": 0.0
-            },
+            "LIVE_KEY_TEMP_": 0.0,
+        },
         "skin": {
             "tone": rnd.uniform(0, 1.0),
             "redness": rnd.uniform(0, 1.0),
             "saturation": rnd.uniform(0, 1.0),
-            "normal_strength": rnd.randint(1, 2), # From Anyhuman1
+            "normal_strength": rnd.randint(1, 2),  # From Anyhuman1
             "roughness_multiplier": rnd.uniform(0, 1.0),
             "freckles": rnd.uniform(0, 1.0),
             "splotches": rnd.uniform(0, 1.0),
             "texture.set": sSkinTexture,
             "cavity_strength": rnd.uniform(0, 1.0),
-            "gender_specific": {
-                "mustache_shadow": rnd.uniform(0, 1.0),
-                "beard_shadow": rnd.uniform(0, 1.0)
-            }
-            },
+            "gender_specific": {"mustache_shadow": rnd.uniform(0, 1.0), "beard_shadow": rnd.uniform(0, 1.0)},
+        },
         "eyes": {
             "pupil_color": [rnd.uniform(0, 1.0), rnd.uniform(0, 1.0), rnd.uniform(0, 1.0), 1.00],
             "sclera_color": [rnd.uniform(0, 1.0), rnd.uniform(0, 1.0), rnd.uniform(0, 1.0), 1.00],
         },
-        "height": {
-            "set": height
-        },
+        "height": {"set": height},
         "hair": {
             "eyebrows": {
                 "set": sEyebrows,
@@ -216,7 +208,7 @@ def FullyRandomizeParams(params, generator_config, rnd):
                 "root_redness": rnd.uniform(0, 1.0),
                 "roots_hue": rnd.uniform(0, 1.0),
                 "fast_or_accurate": 1.0,
-                "hue": rnd.uniform(0, 1.0)
+                "hue": rnd.uniform(0, 1.0),
             },
             "regular_hair": {
                 "set": sRegularHair,
@@ -231,33 +223,26 @@ def FullyRandomizeParams(params, generator_config, rnd):
                 "fast_or_accurate": rnd.uniform(0, 1.0),
                 "hue": rnd.uniform(0, 1.0),
             },
-            "face_hair": dFaceHair
+            "face_hair": dFaceHair,
         },
-        "clothing": {
-            "outfit": {
-                "set": outfit
-            },
-            "footwear": {
-                "set": sFootwear
-            }
-        }
+        "clothing": {"outfit": {"set": outfit}, "footwear": {"set": sFootwear}},
     }
 
-    dictAnyHuman = {"dictCustom":
-            {
-                "sGender": sGender,
-                "sArmatureName" : sArmatureName,
-                "bOpenPoseHandLabels": False,
-                "sOpenposeHandLabelFile": params['mParamConfig'].get('sOpenposeHandLabelFile', 'OpenPoseHandLabel'),
-                "bFacialRig": True,
-                "sWFLWLableFile": params['mParamConfig'].get('sWFLWLableFile', 'WFLWLabel'),
-                "sIMSLabels": params['mParamConfig'].get('sIMSLabels', 'IMSLabel'),
-                # "sEyebrowLabelsPath": params['mParamConfig'].get('sEyebrowLabelsPath', None),
-                "sEyebrowStyle": sEyebrows,
-                "sPoseFilename": None,
-                "dBeardLength": dBeardLength,
-            },
-        "dictHumGen_V4": NewHumGenV4Config
+    dictAnyHuman = {
+        "dictCustom": {
+            "sGender": sGender,
+            "sArmatureName": sArmatureName,
+            "bOpenPoseHandLabels": False,
+            "sOpenposeHandLabelFile": params["mParamConfig"].get("sOpenposeHandLabelFile", "OpenPoseHandLabel"),
+            "bFacialRig": True,
+            "sWFLWLableFile": params["mParamConfig"].get("sWFLWLableFile", "WFLWLabel"),
+            "sIMSLabels": params["mParamConfig"].get("sIMSLabels", "IMSLabel"),
+            # "sEyebrowLabelsPath": params['mParamConfig'].get('sEyebrowLabelsPath', None),
+            "sEyebrowStyle": sEyebrows,
+            "sPoseFilename": None,
+            "dBeardLength": dBeardLength,
+        },
+        "dictHumGen_V4": NewHumGenV4Config,
     }
 
     return dictAnyHuman
